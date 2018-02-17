@@ -50,6 +50,8 @@ android {
 ext {
     supportLibrary = "27.0.2"
     leakcanary = "1.5.4"
+    aac = "1.1.0"
+    glide = "4.6.1"
 }
 
 dependencies {
@@ -58,6 +60,21 @@ dependencies {
     implementation "com.android.support:design:${supportLibrary}"
     implementation "com.android.support:recyclerview-v7:${supportLibrary}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // Android Architecture Components
+    implementation "android.arch.lifecycle:viewmodel:${aac}"
+    implementation "android.arch.lifecycle:livedata:${aac}"
+    implementation "android.arch.lifecycle:runtime:${aac}"
+    annotationProcessor "android.arch.lifecycle:compiler:${aac}"
+
+    // Network
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    // Image
+    implementation "com.github.bumptech.glide:glide:${glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glide}"
 
     // Utils
     implementation 'com.jakewharton.timber:timber:4.6.0'
