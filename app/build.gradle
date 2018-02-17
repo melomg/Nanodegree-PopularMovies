@@ -49,6 +49,7 @@ android {
 
 ext {
     supportLibrary = "27.0.2"
+    leakcanary = "1.5.4"
 }
 
 dependencies {
@@ -57,4 +58,21 @@ dependencies {
     implementation "com.android.support:design:${supportLibrary}"
     implementation "com.android.support:recyclerview-v7:${supportLibrary}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // Utils
+    implementation 'com.jakewharton.timber:timber:4.6.0'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
+}
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "PopularMovies (Java Lint)"
+        property "sonar.projectKey", "popularmovies.java.lint"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.sourceEncoding", "UTF-8"
+        property 'sonar.language', 'java'
+    }
 }

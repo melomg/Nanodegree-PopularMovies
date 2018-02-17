@@ -4,6 +4,7 @@
           package="com.projects.melih.popularmovies">
 
     <application
+        android:name=".PopularMoviesApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +14,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
             <intent-filter>
