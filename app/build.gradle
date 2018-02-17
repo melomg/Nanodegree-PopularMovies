@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+
+    lintOptions {
+        abortOnError false
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        applicationId "com.projects.melih.popularmovies"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            zipAlignEnabled true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            applicationId "com.projects.melih.popularmoviestest"
+            dimension "default"
+            resValue "string", "app_name", "PopularMovies Test"
+        }
+        prod {
+            dimension "default"
+            resValue "string", "app_name", "PopularMovies"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+ext {
+    supportLibrary = "27.0.2"
+}
+
+dependencies {
+    implementation "com.android.support:appcompat-v7:${supportLibrary}"
+    implementation "com.android.support:support-annotations:${supportLibrary}"
+    implementation "com.android.support:design:${supportLibrary}"
+    implementation "com.android.support:recyclerview-v7:${supportLibrary}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+}
