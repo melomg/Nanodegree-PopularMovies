@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.ui.movie.MovieListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,11 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MovieListFragment.newInstance())
                     .commit();
-        }*/
+        }
     }
 
     @Override
