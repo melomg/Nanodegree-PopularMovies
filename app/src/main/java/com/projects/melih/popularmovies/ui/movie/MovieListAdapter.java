@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.ui.base.ItemClickListener;
 
@@ -55,18 +56,15 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHo
         private final Context context;
         private final ItemClickListener itemClickListener;
         private final ImageView ivMovie;
-        private final TextView tvTitle;
 
         MovieViewHolder(Context context, View itemView, ItemClickListener itemClickListener) {
             super(itemView);
             this.context = context;
             this.itemClickListener = itemClickListener;
             ivMovie = itemView.findViewById(R.id.image);
-            tvTitle = itemView.findViewById(R.id.title);
         }
 
         void bindTo(@NonNull Movie movie) {
-            tvTitle.setText(movie.getTitle());
             RequestOptions options = new RequestOptions()
                     .centerCrop()
                     .dontAnimate()
@@ -75,7 +73,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHo
             Glide.with(context)
                     .asBitmap()
                     .apply(options)
-                    .load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg")
+                    .load(Utils.getImagePathWithPoster(movie.getPosterPath()))
                     .thumbnail(0.1f)
                     .into(ivMovie);
         }
