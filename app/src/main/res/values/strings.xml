@@ -1,3 +1,4 @@
 <resources>
-
+    <!-- Actions-->
+    <string name="action_sort">Sort</string>
 </resources>
