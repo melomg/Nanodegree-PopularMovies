@@ -55,6 +55,7 @@ ext {
 }
 
 dependencies {
+    // Support
     implementation "com.android.support:appcompat-v7:${supportLibrary}"
     implementation "com.android.support:support-annotations:${supportLibrary}"
     implementation "com.android.support:design:${supportLibrary}"
@@ -62,8 +63,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Android Architecture Components
-    implementation "android.arch.lifecycle:viewmodel:${aac}"
-    implementation "android.arch.lifecycle:livedata:${aac}"
+    implementation "android.arch.lifecycle:extensions:${aac}"
     implementation "android.arch.lifecycle:runtime:${aac}"
     annotationProcessor "android.arch.lifecycle:compiler:${aac}"
 
@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
     // Image
     implementation "com.github.bumptech.glide:glide:${glide}"
