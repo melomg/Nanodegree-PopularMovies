@@ -1,3 +1,16 @@
 <resources>
+    <style name="ToolBarStyle" parent="AppTheme">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
 
+    <style name="Toolbar"/>
+
+    <style name="Toolbar.Action" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:minWidth">@dimen/min_toolbar_icon_size</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
 </resources>

@@ -1,16 +1,16 @@
 package com.projects.melih.popularmovies.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.ui.base.BaseActivity;
 import com.projects.melih.popularmovies.ui.movie.MovieListFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private SharedViewModel model;
 
     @Override
@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, MovieListFragment.newInstance())
+                    .add(R.id.container, MovieListFragment.newInstance())
+                    .addToBackStack("")
                     .commit();
 
             model.sortByPopular();
