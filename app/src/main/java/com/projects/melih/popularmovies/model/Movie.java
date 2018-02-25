@@ -1,16 +1,21 @@
 package com.projects.melih.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.recyclerview.extensions.DiffCallback;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Melih Gültekin on 17.02.2018
  */
 
-public class Movie {
+public class Movie implements Parcelable {
     @SerializedName("adult")
     private boolean isAdult;
 
@@ -180,4 +185,73 @@ public class Movie {
     public void setVoteCount(long voteCount) {
         this.voteCount = voteCount;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(this.isAdult ? (byte) 1 : (byte) 0);
+        dest.writeString(this.backdropPath);
+        dest.writeList(this.genreIds);
+        dest.writeLong(this.id);
+        dest.writeString(this.originalLanguage);
+        dest.writeString(this.originalTitle);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.title);
+        dest.writeByte(this.isVideo ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.voteAverage);
+        dest.writeLong(this.voteCount);
+    }
+
+    public Movie() {
+        //no-op
+    }
+
+    private Movie(Parcel in) {
+        this.isAdult = in.readByte() != 0;
+        this.backdropPath = in.readString();
+        this.genreIds = new ArrayList<>();
+        in.readList(this.genreIds, Long.class.getClassLoader());
+        this.id = in.readLong();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.overview = in.readString();
+        this.popularity = in.readDouble();
+        this.posterPath = in.readString();
+        this.releaseDate = in.readString();
+        this.title = in.readString();
+        this.isVideo = in.readByte() != 0;
+        this.voteAverage = in.readDouble();
+        this.voteCount = in.readLong();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    public static DiffCallback<Movie> DIFF_CALLBACK = new DiffCallback<Movie>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 }
