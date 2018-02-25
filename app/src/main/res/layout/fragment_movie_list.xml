@@ -7,10 +7,16 @@
         android:layout_height="match_parent"
         android:background="@color/gray_dark">
 
+        <include
+            android:id="@id/toolbar"
+            layout="@layout/toolbar"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/list_item_movie"/>
+            android:layout_below="@+id/toolbar"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_movie_list"/>
     </RelativeLayout>
 </layout>
