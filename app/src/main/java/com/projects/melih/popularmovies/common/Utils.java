@@ -1,5 +1,8 @@
 package com.projects.melih.popularmovies.common;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.projects.melih.popularmovies.BuildConfig;
 
 /**
@@ -11,11 +14,11 @@ public class Utils {
         // no-op
     }
 
-    public static String getImagePathWithPoster(String path) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(BuildConfig.API_BASE_IMAGE_URL)
-                .append("w185/")
-                .append(path);
-        return builder.toString();
+    @NonNull
+    public static String getImagePathWithPoster(@Nullable String path) {
+        if (path == null) {
+            return "";
+        }
+        return BuildConfig.API_BASE_IMAGE_URL + "w185/" + path;
     }
 }
