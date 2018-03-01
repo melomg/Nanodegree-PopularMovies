@@ -1,5 +1,7 @@
 package com.projects.melih.popularmovies.common;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -20,5 +22,10 @@ public class Utils {
             return "";
         }
         return BuildConfig.API_BASE_IMAGE_URL + "w185/" + path;
+    }
+
+    private boolean isNetworkConnected(@NonNull Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (connectivityManager != null) && (connectivityManager.getActiveNetworkInfo() != null);
     }
 }

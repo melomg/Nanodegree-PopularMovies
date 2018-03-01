@@ -9,6 +9,6 @@ public class Constants {
         // no-op
     }
 
-    //TODO enter api key
-    public static final String MOVIE_DB_API_KEY = "";
+    public static final String UNKNOWN_ERROR = "Unknown error";
+    public static final int PAGE_SIZE = 20;
 }

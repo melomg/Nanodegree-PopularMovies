@@ -1,5 +1,7 @@
 package com.projects.melih.popularmovies.network.responses;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.projects.melih.popularmovies.model.Movie;
 
@@ -19,6 +21,7 @@ public class ResponseMovie {
     @SerializedName("total_pages")
     private int totalPages;
 
+    @Nullable
     @SerializedName("results")
     private List<Movie> movies;
 
@@ -34,6 +37,7 @@ public class ResponseMovie {
         return totalPages;
     }
 
+    @Nullable
     public List<Movie> getMovies() {
         return movies;
     }
