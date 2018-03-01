@@ -1,52 +1,23 @@
 package com.projects.melih.popularmovies.ui;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.ui.base.BaseActivity;
-import com.projects.melih.popularmovies.ui.movie.MovieListFragment;
+import com.projects.melih.popularmovies.ui.home.HomeFragment;
 
 public class MainActivity extends BaseActivity {
-    private SharedViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, MovieListFragment.newInstance())
+                    .add(R.id.container, HomeFragment.newInstance())
                     .addToBackStack("")
                     .commit();
-
-            model.sortByPopular();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort_by_popular:
-                model.sortByPopular();
-                return true;
-            case R.id.action_sort_by_top_rated:
-                model.sortByTopRated();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -32,20 +31,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     public void addFragment(@NonNull BaseFragment newFragment, @Nullable View sharedView) {
         if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED)) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.hide(currentFragment);
-
-            if (sharedView != null) {
-                transaction.addSharedElement(sharedView, ViewCompat.getTransitionName(sharedView));
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
+            if (currentFragment != null) {
+                transaction.hide(currentFragment);
             }
+
+            /*if (sharedView != null) {
+                transaction.addSharedElement(sharedView, ViewCompat.getTransitionName(sharedView));
+            }*/
 
             String tag = newFragment.getClass().getName();
             if (!fragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)) {
                 transaction.add(R.id.container, newFragment, tag)
                         .show(newFragment)
                         .addToBackStack(tag)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
         }

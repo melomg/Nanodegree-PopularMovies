@@ -70,6 +70,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${aac}"
     implementation "android.arch.lifecycle:runtime:${aac}"
     annotationProcessor "android.arch.lifecycle:compiler:${aac}"
+    implementation "android.arch.paging:runtime:1.0.0-alpha5"
 
     // Network
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
