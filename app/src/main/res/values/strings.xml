@@ -1,4 +1,5 @@
 <resources>
     <!-- Actions-->
-    <string name="action_sort">Sort</string>
+    <string name="action_sort_most_popular">Most Popular</string>
+    <string name="action_sort_highest_rated">Highest Rated</string>
 </resources>
