@@ -7,6 +7,11 @@ import java.util.Collection;
  */
 
 public class CollectionUtils {
+
+    private CollectionUtils() {
+        //no-op
+    }
+
     public static boolean isNotEmpty(Collection<?> list) {
         return ((list != null) && !list.isEmpty());
     }
