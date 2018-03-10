@@ -79,9 +79,7 @@ public class TopRatedMoviesDataSourceFactory implements DataSource.Factory<Integ
                         }
                     }
                 }
-                //TODO adapter list empty cannot show networkState.postValue(success ? NetworkState.LOADED : NetworkState.error(UNKNOWN_ERROR));
-                // empty view maybe
-                initialLoad.postValue(NetworkState.LOADED);
+                networkState.postValue(success ? NetworkState.LOADED : NetworkState.error(UNKNOWN_ERROR));
             } catch (IOException e) {
                 final String message = e.getMessage();
                 NetworkState error = NetworkState.error((message == null) ? UNKNOWN_ERROR : message);

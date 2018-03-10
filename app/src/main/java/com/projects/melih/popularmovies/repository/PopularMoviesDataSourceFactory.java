@@ -5,6 +5,7 @@ import android.arch.paging.DataSource;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 
+import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieService;
 import com.projects.melih.popularmovies.network.responses.ResponseMovie;
@@ -73,15 +74,13 @@ public class PopularMoviesDataSourceFactory implements DataSource.Factory<Intege
                     final ResponseMovie responseMovie = response.body();
                     if (responseMovie != null) {
                         final List<Movie> movies = responseMovie.getMovies();
-                        if (movies != null) {
+                        if (CollectionUtils.isNotEmpty(movies)) {
                             success = true;
                             callback.onResult(movies, 0, 2);
                         }
                     }
                 }
-                //TODO adapter list empty cannot show networkState.postValue(success ? NetworkState.LOADED : NetworkState.error(UNKNOWN_ERROR));
-                // empty view maybe
-                initialLoad.postValue(NetworkState.LOADED);
+                networkState.postValue(success ? NetworkState.LOADED : NetworkState.error(UNKNOWN_ERROR));
             } catch (IOException e) {
                 final String message = e.getMessage();
                 NetworkState error = NetworkState.error((message == null) ? UNKNOWN_ERROR : message);
