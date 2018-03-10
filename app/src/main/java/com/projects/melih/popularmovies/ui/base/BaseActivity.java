@@ -2,12 +2,10 @@ package com.projects.melih.popularmovies.ui.base;
 
 import android.arch.lifecycle.Lifecycle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.projects.melih.popularmovies.R;
 
@@ -28,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     @Override
-    public void addFragment(@NonNull BaseFragment newFragment, @Nullable View sharedView) {
+    public void addFragment(@NonNull BaseFragment newFragment) {
         if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED)) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -37,16 +35,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 transaction.hide(currentFragment);
             }
 
-            /*if (sharedView != null) {
-                transaction.addSharedElement(sharedView, ViewCompat.getTransitionName(sharedView));
-            }*/
-
             String tag = newFragment.getClass().getName();
             if (!fragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)) {
                 transaction.add(R.id.container, newFragment, tag)
                         .show(newFragment)
                         .addToBackStack(tag)
-                        //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
         }

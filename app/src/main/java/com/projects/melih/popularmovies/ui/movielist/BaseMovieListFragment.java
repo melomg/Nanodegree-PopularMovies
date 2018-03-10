@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movie;
+package com.projects.melih.popularmovies.ui.movielist;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.databinding.FragmentMovieListBinding;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
+import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
 
 /**
  * Created by Melih Gültekin on 1.03.2018
@@ -33,7 +34,8 @@ abstract class BaseMovieListFragment extends BaseFragment {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
-        adapter = new MovieListAdapter(context, (movie, imageView) -> navigationListener.addFragment(MovieDetailFragment.newInstance(movie), imageView));
+        adapter = new MovieListAdapter(context, (movie) -> navigationListener.addFragment(MovieDetailFragment.newInstance(movie)));
+
         final GridLayoutManager layoutManager = new GridLayoutManager(context, DEFAULT_SPAN_COUNT);
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setHasFixedSize(false);

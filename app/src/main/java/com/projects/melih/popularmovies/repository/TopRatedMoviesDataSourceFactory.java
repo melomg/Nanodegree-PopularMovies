@@ -5,6 +5,7 @@ import android.arch.paging.DataSource;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 
+import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieService;
 import com.projects.melih.popularmovies.network.responses.ResponseMovie;
@@ -73,7 +74,7 @@ public class TopRatedMoviesDataSourceFactory implements DataSource.Factory<Integ
                     final ResponseMovie responseMovie = response.body();
                     if (responseMovie != null) {
                         final List<Movie> movies = responseMovie.getMovies();
-                        if (movies != null) {
+                        if (CollectionUtils.isNotEmpty(movies)) {
                             success = true;
                             callback.onResult(movies, 0, 2);
                         }

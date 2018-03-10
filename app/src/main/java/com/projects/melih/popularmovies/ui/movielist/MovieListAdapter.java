@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movie;
+package com.projects.melih.popularmovies.ui.movielist;
 
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
@@ -26,8 +26,9 @@ import com.projects.melih.popularmovies.ui.base.ItemClickListener;
  */
 
 class MovieListAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
-    public static final int VIEW_TYPE_ITEM = 1;
-    public static final int VIEW_TYPE_FOOTER = 2;
+    static final int VIEW_TYPE_ITEM = 1;
+    @SuppressWarnings("WeakerAccess")
+    static final int VIEW_TYPE_FOOTER = 2;
     private static final int FOOTER_ITEM_COUNT = 1;
 
     private final Context context;
@@ -117,7 +118,7 @@ class MovieListAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> 
 
                 ViewCompat.setTransitionName(ivMovie, movie.getPosterPath());
 
-                itemView.setOnClickListener(v -> itemClickListener.onItemClick(movie, ivMovie));
+                itemView.setOnClickListener(v -> itemClickListener.onItemClick(movie));
             }
         }
     }
@@ -130,7 +131,6 @@ class MovieListAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> 
             super(itemView);
             progressBar = itemView.findViewById(R.id.progress_bar);
             tvErrorMessage = itemView.findViewById(R.id.error_message);
-            //TODO change the way showing error
         }
 
         void bindTo(@Nullable NetworkState networkState) {
