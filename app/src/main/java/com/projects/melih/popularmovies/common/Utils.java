@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 
 import com.projects.melih.popularmovies.BuildConfig;
 
+import java.util.Collection;
+
 /**
  * Created by Melih Gültekin on 20.02.2018
  */
@@ -24,7 +26,15 @@ public class Utils {
         return BuildConfig.API_BASE_IMAGE_URL + "w185/" + path;
     }
 
-    private boolean isNetworkConnected(@NonNull Context context) {
+    @NonNull
+    public static String getImagePathWithBackdrop(@Nullable String path) {
+        if (path == null) {
+            return "";
+        }
+        return BuildConfig.API_BASE_IMAGE_URL + "w780/" + path;
+    }
+
+    public static boolean isNetworkConnected(@NonNull Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return (connectivityManager != null) && (connectivityManager.getActiveNetworkInfo() != null);
     }
