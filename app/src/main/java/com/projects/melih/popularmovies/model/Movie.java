@@ -15,6 +15,7 @@ import java.util.List;
  * Created by Melih Gültekin on 17.02.2018
  */
 
+@SuppressWarnings("unused")
 public class Movie implements Parcelable {
     @SerializedName("adult")
     private boolean isAdult;

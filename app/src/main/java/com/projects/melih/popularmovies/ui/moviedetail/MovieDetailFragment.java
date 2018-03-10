@@ -39,22 +39,24 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         final Bundle arguments = getArguments();
         if (arguments != null) {
             Movie movie = arguments.getParcelable(ARGUMENT_MOVIE);
-            binding.collapsingToolbar.setTitle(movie.getTitle());
-            binding.releaseDate.setText(movie.getReleaseDate());
-            binding.voteAverage.setText(String.valueOf(movie.getVoteAverage()));
-            binding.overview.setText(movie.getOverview());
+            if (movie != null) {
+                binding.collapsingToolbar.setTitle(movie.getTitle());
+                binding.releaseDate.setText(movie.getReleaseDate());
+                binding.voteAverage.setText(String.valueOf(movie.getVoteAverage()));
+                binding.overview.setText(movie.getOverview());
 
-            RequestOptions options = new RequestOptions()
-                    .centerCrop()
-                    .dontAnimate()
-                    .placeholder(R.drawable.ic_movie_placeholder)
-                    .error(R.drawable.ic_movie_placeholder);
-            Glide.with(context)
-                    .asBitmap()
-                    .apply(options)
-                    .load(Utils.getImagePathWithBackdrop(movie.getBackdropPath()))
-                    .thumbnail(0.1f)
-                    .into(binding.backdrop.image);
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .dontAnimate()
+                        .placeholder(R.drawable.ic_movie_placeholder)
+                        .error(R.drawable.ic_movie_placeholder);
+                Glide.with(context)
+                        .asBitmap()
+                        .apply(options)
+                        .load(Utils.getImagePathWithBackdrop(movie.getBackdropPath()))
+                        .thumbnail(0.1f)
+                        .into(binding.backdrop.image);
+            }
         }
         return binding.getRoot();
     }

@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 
 import com.projects.melih.popularmovies.BuildConfig;
 
-import java.util.Collection;
-
 /**
  * Created by Melih Gültekin on 20.02.2018
  */

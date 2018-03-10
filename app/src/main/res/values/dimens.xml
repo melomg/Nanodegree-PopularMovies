@@ -7,7 +7,6 @@
     <dimen name="x_min_size">4dp</dimen>
     <dimen name="list_item_width">190dp</dimen>
 
-    <dimen name="normal_text_size">14sp</dimen>
     <dimen name="toolbar_icon_min_size">44dp</dimen>
     <dimen name="toolbar_text_size">22sp</dimen>
     <dimen name="elevation_size">8dp</dimen>

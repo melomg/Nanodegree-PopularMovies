@@ -11,7 +11,7 @@ import com.projects.melih.popularmovies.ui.movielist.TopRatedMoviesFragment;
  * Created by Melih Gültekin on 1.03.2018
  */
 
-public class BottomNavigationPagerAdapter extends FragmentStatePagerAdapter {
+class BottomNavigationPagerAdapter extends FragmentStatePagerAdapter {
     static final int BY_POPULAR = 0;
     static final int BY_TOP_RATED = 1;
     private static final int TAB_COUNT = 2;

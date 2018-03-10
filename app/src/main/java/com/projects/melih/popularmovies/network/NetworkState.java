@@ -17,6 +17,7 @@ public class NetworkState {
     public static final NetworkState LOADING = new NetworkState(State.RUNNING);
     public static final NetworkState NO_NETWORK = new NetworkState(State.NO_NETWORK);
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     @State
     private final int state;
     private final String errorMessage;
