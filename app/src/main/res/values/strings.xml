@@ -1,5 +1,11 @@
 <resources>
-    <!-- Actions-->
+    <!-- Bottom Sheet -->
     <string name="action_sort_most_popular">Most Popular</string>
     <string name="action_sort_highest_rated">Highest Rated</string>
+
+    <!-- Movie Detail-->
+    <string name="label_release_date">Release Date:</string>
+    <string name="label_vote_average">Vote Average:</string>
+    <string name="label_overview">Overview:</string>
+    <string name="network_error">Make sure you are connected to internet!</string>
 </resources>

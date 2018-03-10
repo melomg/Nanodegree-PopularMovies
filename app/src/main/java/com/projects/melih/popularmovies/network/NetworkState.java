@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.repository;
+package com.projects.melih.popularmovies.network;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.projects.melih.popularmovies.repository.State.*;
+import static com.projects.melih.popularmovies.network.State.*;
 
 /**
  * Created by Melih Gültekin on 24.02.2018
@@ -15,6 +15,7 @@ import static com.projects.melih.popularmovies.repository.State.*;
 public class NetworkState {
     public static final NetworkState LOADED = new NetworkState(State.SUCCESS);
     public static final NetworkState LOADING = new NetworkState(State.RUNNING);
+    public static final NetworkState NO_NETWORK = new NetworkState(State.NO_NETWORK);
 
     @State
     private final int state;
@@ -42,10 +43,12 @@ public class NetworkState {
 @IntDef(value = {
         SUCCESS,
         RUNNING,
-        FAILED
+        FAILED,
+        NO_NETWORK
 })
 @interface State {
     int SUCCESS = 0;
     int RUNNING = SUCCESS + 1;
     int FAILED = RUNNING + 1;
+    int NO_NETWORK = FAILED + 1;
 }

@@ -20,7 +20,6 @@ import com.projects.melih.popularmovies.ui.base.BaseFragment;
 public class HomeFragment extends BaseFragment {
 
     private FragmentHomeBinding binding;
-    private ViewPager.OnPageChangeListener listener;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -32,7 +31,7 @@ public class HomeFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         binding.viewPager.setAdapter(new BottomNavigationPagerAdapter(getChildFragmentManager()));
-        listener = new ViewPager.OnPageChangeListener() {
+        ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 //no-op
@@ -60,7 +59,6 @@ public class HomeFragment extends BaseFragment {
         };
         binding.viewPager.addOnPageChangeListener(listener);
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            //TODO await
             int viewPagerCurrentItem;
             switch (item.getItemId()) {
                 case R.id.action_sort_highest_rated:

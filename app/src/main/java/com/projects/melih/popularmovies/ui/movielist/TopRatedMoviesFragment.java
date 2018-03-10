@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movie;
+package com.projects.melih.popularmovies.ui.movielist;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.projects.melih.popularmovies.repository.NetworkState;
+import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.common.CollectionUtils;
+import com.projects.melih.popularmovies.network.NetworkState;
 
 /**
  * Created by Melih Gültekin on 17.02.2018
@@ -26,8 +28,18 @@ public class TopRatedMoviesFragment extends BaseMovieListFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         final TopRatedMoviesViewModel model = ViewModelProviders.of(this).get(TopRatedMoviesViewModel.class);
         model.sortByTopRated(false);
-        model.getPagedList().observe(this, adapter::setList);
-        model.getNetworkState().observe(this, adapter::setNetworkState);
+        model.getPagedList().observe(this, movies -> {
+            if (CollectionUtils.isNotEmpty(movies)) {
+                adapter.setList(movies);
+            }
+        });
+        model.getNetworkState().observe(this, networkState -> {
+            if (networkState == NetworkState.NO_NETWORK) {
+                showToast(R.string.network_error);
+            } else {
+                adapter.setNetworkState(networkState);
+            }
+        });
         model.getRefreshState().observe(this, networkState -> binding.swipeRefresh.setRefreshing(networkState == NetworkState.LOADING));
 
         binding.swipeRefresh.setOnRefreshListener(() -> model.sortByTopRated(true));
