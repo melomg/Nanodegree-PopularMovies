@@ -1,12 +1,16 @@
-package com.projects.melih.popularmovies.ui.movie;
+package com.projects.melih.popularmovies.ui.movielist;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+import android.support.annotation.NonNull;
 
 import com.projects.melih.popularmovies.common.Constants;
+import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieAPI;
 import com.projects.melih.popularmovies.repository.NetworkState;
@@ -16,18 +20,22 @@ import com.projects.melih.popularmovies.repository.PopularMoviesDataSourceFactor
  * Created by Melih Gültekin on 1.03.2018
  */
 
-class PopularMoviesViewModel extends ViewModel {
+class PopularMoviesViewModel extends AndroidViewModel {
     private final PopularMoviesDataSourceFactory popularMoviesSourceFactory = new PopularMoviesDataSourceFactory(MovieAPI.getMovieService());
 
     private LiveData<PagedList<Movie>> pagedList;
-    private LiveData<NetworkState> networkState;
+    private MutableLiveData<NetworkState> networkState;
     private LiveData<NetworkState> refreshState;
+
+    public PopularMoviesViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     LiveData<PagedList<Movie>> getPagedList() {
         return pagedList;
     }
 
-    LiveData<NetworkState> getNetworkState() {
+    MutableLiveData<NetworkState> getNetworkState() {
         return networkState;
     }
 
@@ -43,8 +51,11 @@ class PopularMoviesViewModel extends ViewModel {
             }
         } else if (pagedList == null) {
             pagedList = new LivePagedListBuilder<>(popularMoviesSourceFactory, Constants.PAGE_SIZE).build();
-            networkState = Transformations.switchMap(popularMoviesSourceFactory.getSourceLiveData(), PopularMoviesDataSourceFactory.PageKeyedMovieDataSource::getNetworkState);
+            networkState = (MutableLiveData<NetworkState>) Transformations.switchMap(popularMoviesSourceFactory.getSourceLiveData(), PopularMoviesDataSourceFactory.PageKeyedMovieDataSource::getNetworkState);
             refreshState = Transformations.switchMap(popularMoviesSourceFactory.getSourceLiveData(), PopularMoviesDataSourceFactory.PageKeyedMovieDataSource::getInitialLoad);
+        }
+        if (!Utils.isNetworkConnected(getApplication().getApplicationContext())) {
+            networkState.postValue(NetworkState.NO_NETWORK);
         }
     }
 }
