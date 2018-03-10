@@ -47,6 +47,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
             RequestOptions options = new RequestOptions()
                     .centerCrop()
                     .dontAnimate()
+                    .placeholder(R.drawable.ic_movie_placeholder)
                     .error(R.drawable.ic_movie_placeholder);
             Glide.with(context)
                     .asBitmap()
