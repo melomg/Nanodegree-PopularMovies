@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.repository;
+package com.projects.melih.popularmovies.network;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.projects.melih.popularmovies.repository.State.*;
+import static com.projects.melih.popularmovies.network.State.*;
 
 /**
  * Created by Melih Gültekin on 24.02.2018

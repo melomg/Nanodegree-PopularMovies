@@ -13,7 +13,7 @@ import com.projects.melih.popularmovies.common.Constants;
 import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieAPI;
-import com.projects.melih.popularmovies.repository.NetworkState;
+import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.repository.PopularMoviesDataSourceFactory;
 
 /**

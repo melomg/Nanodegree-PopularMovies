@@ -18,7 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.model.Movie;
-import com.projects.melih.popularmovies.repository.NetworkState;
+import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.ui.base.ItemClickListener;
 
 /**

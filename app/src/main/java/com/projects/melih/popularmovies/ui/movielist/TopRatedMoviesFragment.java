@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.common.CollectionUtils;
-import com.projects.melih.popularmovies.repository.NetworkState;
+import com.projects.melih.popularmovies.network.NetworkState;
 
 /**
  * Created by Melih Gültekin on 17.02.2018

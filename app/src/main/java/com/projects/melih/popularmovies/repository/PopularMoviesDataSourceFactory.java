@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieService;
+import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.network.responses.ResponseMovie;
 
 import java.io.IOException;
