@@ -11,6 +11,7 @@ import java.util.List;
  * Created by Melih Gültekin on 20.02.2018
  */
 
+@SuppressWarnings("unused")
 public class ResponseMovie {
     @SerializedName("page")
     private int page;

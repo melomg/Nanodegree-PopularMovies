@@ -30,10 +30,10 @@ import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
 class PopularMoviesViewModel extends AndroidViewModel {
 
     private final MovieService movieService;
+    private final MutableLiveData<Integer> page;
+    private final MutableLiveData<NetworkState> networkState;
+    private final MutableLiveData<NetworkState> refreshState;
     private MutableLiveData<List<Movie>> list;
-    private MutableLiveData<Integer> page;
-    private MutableLiveData<NetworkState> networkState;
-    private MutableLiveData<NetworkState> refreshState;
     private Call<ResponseMovie> call;
 
     public PopularMoviesViewModel(@NonNull Application application) {
