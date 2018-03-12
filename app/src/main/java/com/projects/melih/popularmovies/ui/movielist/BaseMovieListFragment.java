@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.components.GridAutoFitLayoutManager;
 import com.projects.melih.popularmovies.databinding.FragmentMovieListBinding;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
 import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
@@ -21,10 +21,11 @@ import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
  */
 
 abstract class BaseMovieListFragment extends BaseFragment {
-    protected static final int DEFAULT_SPAN_COUNT = 2;
-
     protected FragmentMovieListBinding binding;
     protected MovieListAdapter adapter;
+    protected EndlessRecyclerViewScrollListener scrollListener;
+
+    protected abstract void onLoadMore();
 
     @CallSuper
     @Nullable
@@ -34,35 +35,32 @@ abstract class BaseMovieListFragment extends BaseFragment {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
-        adapter = new MovieListAdapter(context, (movie) -> navigationListener.addFragment(MovieDetailFragment.newInstance(movie)));
+        adapter = new MovieListAdapter(context, movie -> navigationListener.addFragment(MovieDetailFragment.newInstance(movie)));
 
-        final GridLayoutManager layoutManager = new GridLayoutManager(context, DEFAULT_SPAN_COUNT);
+        GridAutoFitLayoutManager layoutManager = new GridAutoFitLayoutManager(context, R.dimen.list_item_width);
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setHasFixedSize(false);
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        binding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        layoutManager.setSpanCount(getNewSpanCount());
-                    }
-                });
 
-        ((GridLayoutManager) binding.recyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public int getSpanSize(int position) {
-                if (adapter.getItemViewType(position) != MovieListAdapter.VIEW_TYPE_ITEM) {
-                    return getNewSpanCount();
-                }
-                return 1;
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView recyclerView) {
+                BaseMovieListFragment.this.onLoadMore();
             }
-        });
+        };
+
+        binding.recyclerView.addOnScrollListener(scrollListener);
         return binding.getRoot();
     }
 
-    private int getNewSpanCount() {
-        float listItemWidth = context.getResources().getDimension(R.dimen.list_item_width);
-        return Math.max(DEFAULT_SPAN_COUNT, (int) Math.floor(binding.recyclerView.getMeasuredWidth() / listItemWidth));
+    @Override
+    public void onStop() {
+        super.onStop();
+        binding.recyclerView.removeOnScrollListener(scrollListener);
+    }
+
+    protected void onRefreshListener() {
+        adapter.submitMovies(null);
+        scrollListener.resetState();
     }
 }

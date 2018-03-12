@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.projects.melih.popularmovies.R;
-import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.network.NetworkState;
 
 /**
@@ -17,6 +16,8 @@ import com.projects.melih.popularmovies.network.NetworkState;
  */
 
 public class TopRatedMoviesFragment extends BaseMovieListFragment {
+
+    private TopRatedMoviesViewModel model;
 
     public static TopRatedMoviesFragment newInstance() {
         return new TopRatedMoviesFragment();
@@ -26,23 +27,31 @@ public class TopRatedMoviesFragment extends BaseMovieListFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        final TopRatedMoviesViewModel model = ViewModelProviders.of(this).get(TopRatedMoviesViewModel.class);
+        model = ViewModelProviders.of(this).get(TopRatedMoviesViewModel.class);
+
         model.sortByTopRated(false);
-        model.getPagedList().observe(this, movies -> {
-            if (CollectionUtils.isNotEmpty(movies)) {
-                adapter.setList(movies);
+        model.getPagedList().observe(this, allMovies -> {
+            if (allMovies != null) {
+                adapter.submitMovies(allMovies);
             }
         });
         model.getNetworkState().observe(this, networkState -> {
             if (networkState == NetworkState.NO_NETWORK) {
                 showToast(R.string.network_error);
-            } else {
-                adapter.setNetworkState(networkState);
+            } else if (networkState != null) {
+                showToast(networkState.getErrorMessage());
             }
         });
         model.getRefreshState().observe(this, networkState -> binding.swipeRefresh.setRefreshing(networkState == NetworkState.LOADING));
-
-        binding.swipeRefresh.setOnRefreshListener(() -> model.sortByTopRated(true));
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            super.onRefreshListener();
+            model.sortByTopRated(true);
+        });
         return view;
+    }
+
+    @Override
+    protected void onLoadMore() {
+       model.sortByTopRated(false);
     }
 }

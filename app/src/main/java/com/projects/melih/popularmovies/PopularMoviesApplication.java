@@ -26,7 +26,6 @@ public class PopularMoviesApplication extends Application {
                     .detectLeakedSqlLiteObjects()
                     .detectLeakedClosableObjects()
                     .penaltyLog()
-                    .penaltyDeath()
                     .build());
         }
         super.onCreate();

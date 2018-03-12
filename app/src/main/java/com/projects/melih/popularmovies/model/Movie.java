@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.recyclerview.extensions.DiffCallback;
+import android.support.v7.util.DiffUtil;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -244,15 +244,15 @@ public class Movie implements Parcelable {
         }
     };
 
-    public static DiffCallback<Movie> DIFF_CALLBACK = new DiffCallback<Movie>() {
+    public static final DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.getId() == newItem.getId();
+        public boolean areItemsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
+            return oldMovie.getId() == newMovie.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.equals(newItem);
+        public boolean areContentsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
+            return oldMovie.equals(newMovie);
         }
     };
 }

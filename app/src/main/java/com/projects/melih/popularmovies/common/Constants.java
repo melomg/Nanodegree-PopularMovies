@@ -10,5 +10,4 @@ public class Constants {
     }
 
     public static final String UNKNOWN_ERROR = "Unknown error";
-    public static final int PAGE_SIZE = 20;
 }

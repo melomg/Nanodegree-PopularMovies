@@ -52,10 +52,11 @@ android {
 }
 
 ext {
-    supportLibrary = "27.0.2"
-    leakcanary = "1.5.4"
+    supportLibrary = "27.1.0"
     aac = "1.1.0"
+    retrofit = "2.3.0"
     glide = "4.6.1"
+    leakcanary = "1.5.4"
 }
 
 dependencies {
@@ -70,11 +71,10 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${aac}"
     implementation "android.arch.lifecycle:runtime:${aac}"
     annotationProcessor "android.arch.lifecycle:compiler:${aac}"
-    implementation "android.arch.paging:runtime:1.0.0-alpha5"
 
     // Network
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 

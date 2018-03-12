@@ -4,35 +4,49 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 
-import com.projects.melih.popularmovies.common.Constants;
+import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.network.MovieAPI;
+import com.projects.melih.popularmovies.network.MovieService;
 import com.projects.melih.popularmovies.network.NetworkState;
-import com.projects.melih.popularmovies.repository.TopRatedMoviesDataSourceFactory;
+import com.projects.melih.popularmovies.network.responses.ResponseMovie;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
 
 /**
  * Created by Melih Gültekin on 1.03.2018
  */
 
 class TopRatedMoviesViewModel extends AndroidViewModel {
-    private final TopRatedMoviesDataSourceFactory topRatedMoviesSourceFactory = new TopRatedMoviesDataSourceFactory(MovieAPI.getMovieService());
 
-    private LiveData<PagedList<Movie>> pagedList;
+    private final MovieService movieService;
+    private MutableLiveData<List<Movie>> list;
+    private MutableLiveData<Integer> page;
     private MutableLiveData<NetworkState> networkState;
-    private LiveData<NetworkState> refreshState;
+    private MutableLiveData<NetworkState> refreshState;
+    private Call<ResponseMovie> call;
 
     public TopRatedMoviesViewModel(@NonNull Application application) {
         super(application);
+        page = new MutableLiveData<>();
+        page.setValue(0);
+        networkState = new MutableLiveData<>();
+        refreshState = new MutableLiveData<>();
+        movieService = MovieAPI.getMovieService();
     }
 
-    LiveData<PagedList<Movie>> getPagedList() {
-        return pagedList;
+    LiveData<List<Movie>> getPagedList() {
+        return list;
     }
 
     MutableLiveData<NetworkState> getNetworkState() {
@@ -43,19 +57,68 @@ class TopRatedMoviesViewModel extends AndroidViewModel {
         return refreshState;
     }
 
-    void sortByTopRated(boolean shouldRefresh) {
-        if (shouldRefresh) {
-            final TopRatedMoviesDataSourceFactory.PageKeyedMovieDataSource value = topRatedMoviesSourceFactory.getSourceLiveData().getValue();
-            if (value != null) {
-                value.invalidate();
-            }
-        } else if (pagedList == null) {
-            pagedList = new LivePagedListBuilder<>(topRatedMoviesSourceFactory, Constants.PAGE_SIZE).build();
-            networkState = (MutableLiveData<NetworkState>) Transformations.switchMap(topRatedMoviesSourceFactory.getSourceLiveData(), TopRatedMoviesDataSourceFactory.PageKeyedMovieDataSource::getNetworkState);
-            refreshState = Transformations.switchMap(topRatedMoviesSourceFactory.getSourceLiveData(), TopRatedMoviesDataSourceFactory.PageKeyedMovieDataSource::getInitialLoad);
+    void sortByTopRated(boolean isFirstPage) {
+        if (list == null) {
+            list = new MutableLiveData<>();
         }
         if (!Utils.isNetworkConnected(getApplication().getApplicationContext())) {
+            list.postValue(list.getValue());
             networkState.postValue(NetworkState.NO_NETWORK);
+            refreshState.postValue(NetworkState.LOADED);
+        } else {
+            if (isFirstPage) {
+                list.setValue(new ArrayList<>());
+                page.setValue(0);
+            }
+            final Integer currentPage = page.getValue();
+            if (currentPage != null) {
+                page.setValue(currentPage + 1);
+            }
+            callTopRatedMovies(page.getValue());
         }
+    }
+
+    private void callTopRatedMovies(final int page) {
+        refreshState.postValue(NetworkState.LOADING);
+        call = movieService.getTopRatedMovies(page);
+        call.enqueue(new Callback<ResponseMovie>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseMovie> call, @NonNull Response<ResponseMovie> response) {
+                boolean success = false;
+                if (response.isSuccessful()) {
+                    final ResponseMovie body = response.body();
+                    if (body != null) {
+                        final List<Movie> movies = body.getMovies();
+                        if (CollectionUtils.isNotEmpty(movies)) {
+                            success = true;
+                            List<Movie> allMovies = list.getValue();
+                            if (allMovies == null) {
+                                allMovies = new ArrayList<>();
+                            }
+                            allMovies.addAll(movies);
+                            list.postValue(allMovies);
+                        }
+                    }
+                    refreshState.postValue(NetworkState.LOADED);
+                    if (!success) {
+                        networkState.postValue(NetworkState.error(UNKNOWN_ERROR));
+                    }
+                } else {
+                    networkState.postValue(NetworkState.error("error code: " + response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseMovie> call, @NonNull Throwable t) {
+                final String message = t.getMessage();
+                networkState.postValue(NetworkState.error((message == null) ? UNKNOWN_ERROR : message));
+            }
+        });
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        call.cancel();
     }
 }
