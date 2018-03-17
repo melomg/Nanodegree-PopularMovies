@@ -1,9 +1,6 @@
 package com.projects.melih.popularmovies.common;
 
-import com.projects.melih.popularmovies.model.Video;
-
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Melih Gültekin on 10.03.2018

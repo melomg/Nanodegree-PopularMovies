@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.projects.melih.popularmovies.BuildConfig;
-import com.projects.melih.popularmovies.common.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

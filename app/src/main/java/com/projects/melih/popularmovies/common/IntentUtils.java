@@ -1,6 +1,5 @@
 package com.projects.melih.popularmovies.common;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;

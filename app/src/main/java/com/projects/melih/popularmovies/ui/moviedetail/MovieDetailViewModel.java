@@ -5,9 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.common.Utils;
@@ -33,8 +31,8 @@ class MovieDetailViewModel extends AndroidViewModel {
 
     private final MovieService movieService;
     private final MutableLiveData<NetworkState> networkState;
+    private final MutableLiveData<Long> movieId;
     private MediatorLiveData<List<Video>> list;
-    private MutableLiveData<Long> movieId;
     private Call<ResponseVideo> call;
 
     public MovieDetailViewModel(@NonNull Application application) {
