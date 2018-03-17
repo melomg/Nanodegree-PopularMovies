@@ -76,7 +76,7 @@ public class MovieAPI {
             Request original = chain.request();
             HttpUrl originalHttpUrl = original.url();
             HttpUrl url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("api_key", Constants.MOVIE_DB_API_KEY)
+                    .addQueryParameter("api_key", BuildConfig.API_KEY)
                     .build();
 
             Request.Builder requestBuilder = original.newBuilder()
