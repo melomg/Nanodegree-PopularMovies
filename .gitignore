@@ -56,3 +56,4 @@ gradlew
 /app/src/main/res/values/keys.xml
 
 *.jar
+/gradle.properties

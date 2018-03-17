@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.TypedValue;
 
 import com.projects.melih.popularmovies.BuildConfig;
 
@@ -35,5 +36,16 @@ public class Utils {
     public static boolean isNetworkConnected(@NonNull Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return (connectivityManager != null) && (connectivityManager.getActiveNetworkInfo() != null);
+    }
+
+    public static String getVideoImageYoutubeLink(@Nullable String key) {
+        if (key == null) {
+            return "";
+        }
+        return "https://img.youtube.com/vi/" + key.trim() + "/0.jpg";
+    }
+
+    public static int dpToPx(@NonNull Context context, int dp) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
 }

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.projects.melih.popularmovies.BuildConfig;
-import com.projects.melih.popularmovies.common.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +75,7 @@ public class MovieAPI {
             Request original = chain.request();
             HttpUrl originalHttpUrl = original.url();
             HttpUrl url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("api_key", Constants.MOVIE_DB_API_KEY)
+                    .addQueryParameter("api_key", BuildConfig.API_KEY)
                     .build();
 
             Request.Builder requestBuilder = original.newBuilder()
