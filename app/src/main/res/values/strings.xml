@@ -1,4 +1,8 @@
 <resources>
+    <!-- General -->
+    <string name="unknown_error">Unknown error!</string>
+    <string name="network_error">Make sure you are connected to internet!</string>
+
     <!-- Bottom Sheet -->
     <string name="action_sort_most_popular">Most Popular</string>
     <string name="action_sort_highest_rated">Highest Rated</string>
@@ -7,5 +11,5 @@
     <string name="label_release_date">Release Date:</string>
     <string name="label_vote_average">Vote Average:</string>
     <string name="label_overview">Overview:</string>
-    <string name="network_error">Make sure you are connected to internet!</string>
+    <string name="label_videos">Videos:</string>
 </resources>
