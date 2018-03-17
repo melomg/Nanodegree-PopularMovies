@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -39,80 +40,144 @@
                     app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin">
 
-                    <ImageButton
-                        android:id="@+id/toolbarMenu"
-                        style="@style/Toolbar.Action"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_back"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/toolbarMenu"
+                            style="@style/Toolbar.Action"
+                            android:layout_alignParentStart="true"
+                            android:contentDescription="@null"
+                            app:srcCompat="@drawable/ic_back"/>
+
+                        <ImageButton
+                            android:id="@+id/favorite"
+                            style="@style/Toolbar.Action"
+                            android:layout_alignParentEnd="true"
+                            android:contentDescription="@null"
+                            app:srcCompat="@drawable/ic_favorite_off"/>
+                    </RelativeLayout>
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/x_large_size"
-            android:layout_marginStart="@dimen/x_large_size"
-            android:background="@color/gray_light"
-            android:elevation="@dimen/elevation_size"
             app:behavior_overlapTop="30dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/normal_size">
 
-                <android.support.constraint.Guideline
-                    android:id="@+id/guideline"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.4"/>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_light"
+                    android:elevation="6dp"
+                    android:layout_marginBottom="@dimen/normal_size"
+                    android:layout_marginEnd="@dimen/x_large_size"
+                    android:layout_marginStart="@dimen/x_large_size">
 
-                <TextView
-                    android:id="@+id/label_release_date"
-                    style="@style/Text.Label"
-                    android:text="@string/label_release_date"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.4"/>
 
-                <TextView
-                    android:id="@+id/release_date"
-                    style="@style/Text.Value"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/guideline"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    <TextView
+                        android:id="@+id/label_release_date"
+                        style="@style/Text.Label"
+                        android:text="@string/label_release_date"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/label_vote_average"
-                    style="@style/Text.Label"
-                    android:text="@string/label_vote_average"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/label_release_date"/>
+                    <TextView
+                        android:id="@+id/release_date"
+                        style="@style/Text.Value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/vote_average"
-                    style="@style/Text.Value"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/release_date"/>
+                    <TextView
+                        android:id="@+id/label_vote_average"
+                        style="@style/Text.Label"
+                        android:text="@string/label_vote_average"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label_release_date"/>
 
-                <TextView
-                    android:id="@+id/label_overview"
-                    style="@style/Text.Label"
-                    android:text="@string/label_overview"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/label_vote_average"/>
+                    <TextView
+                        android:id="@+id/vote_average"
+                        style="@style/Text.Value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/release_date"/>
 
-                <TextView
-                    android:id="@+id/overview"
-                    style="@style/Text.Value"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/label_overview"/>
+                    <TextView
+                        android:id="@+id/label_overview"
+                        style="@style/Text.Label"
+                        android:text="@string/label_overview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label_vote_average"/>
+
+                    <TextView
+                        android:id="@+id/overview"
+                        style="@style/Text.Value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label_overview"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/videos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_light"
+                    android:elevation="6dp"
+                    android:layout_marginTop="@dimen/normal_size"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/basic"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/label_videos"
+                        style="@style/Text.Label"
+                        android:layout_marginStart="@dimen/x_large_size"
+                        android:text="@string/label_videos"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_videos"
+                        android:layout_width="match_parent"
+                        android:background="@color/gray"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:scrollbars="horizontal"
+                        app:layout_constraintTop_toBottomOf="@+id/label_videos"/>
+                </android.support.constraint.ConstraintLayout>
+
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/large_size"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:focusable="true"
+            app:layout_anchor="@+id/nested_scroll_view"
+            app:layout_anchorGravity="bottom|right|end"
+            app:srcCompat="@drawable/ic_share_white"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>
