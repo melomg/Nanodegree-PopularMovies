@@ -72,8 +72,8 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHo
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
                         .dontAnimate()
-                        .placeholder(R.drawable.ic_movie_placeholder)
-                        .error(R.drawable.ic_movie_placeholder);
+                        .placeholder(R.drawable.ic_movie_placeholder_3_4)
+                        .error(R.drawable.ic_movie_placeholder_3_4);
                 Glide.with(context)
                         .asBitmap()
                         .apply(options)
