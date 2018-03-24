@@ -16,4 +16,5 @@
     <string name="see_more">See More</string>
     <string name="review_author"><b>%1$s: \n</b> %2$s</string>
     <string name="reviews">Reviews</string>
+    <string name="share">Share</string>
 </resources>
