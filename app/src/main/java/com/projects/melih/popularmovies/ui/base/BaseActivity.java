@@ -20,8 +20,11 @@ import java.lang.annotation.RetentionPolicy;
  */
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationListener {
+    @SuppressWarnings("WeakerAccess")
     public static final int NONE = 0;
+    @SuppressWarnings("WeakerAccess")
     public static final int LEFT_TO_RIGHT = NONE + 1;
+    @SuppressWarnings("WeakerAccess")
     public static final int BOTTOM_TO_TOP = LEFT_TO_RIGHT + 1;
 
     @Override

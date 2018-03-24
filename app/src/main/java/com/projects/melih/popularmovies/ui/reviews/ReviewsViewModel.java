@@ -27,18 +27,18 @@ import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
  * Created by Melih Gültekin on 18.03.2018
  */
 
-public class ReviewsViewModel extends AndroidViewModel {
+class ReviewsViewModel extends AndroidViewModel {
     private static final int FIRST_PAGE = 0;
     private final MovieService movieService;
     private final MutableLiveData<Integer> page;
     private final MutableLiveData<NetworkState> networkState;
     private final MutableLiveData<NetworkState> refreshState;
+    private final MutableLiveData<Long> movieId;
     private MutableLiveData<Integer> totalPage;
     private MutableLiveData<List<Review>> list;
-    private MutableLiveData<Long> movieId;
     private Call<ResponseReview> call;
 
-    public ReviewsViewModel(@NonNull Application application) {
+    ReviewsViewModel(@NonNull Application application) {
         super(application);
         page = new MutableLiveData<>();
         page.setValue(FIRST_PAGE);

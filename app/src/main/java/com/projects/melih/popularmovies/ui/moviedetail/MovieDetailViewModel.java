@@ -31,7 +31,7 @@ import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
  * Created by Melih Gültekin on 13.03.2018
  */
 
-public class MovieDetailViewModel extends AndroidViewModel {
+class MovieDetailViewModel extends AndroidViewModel {
 
     private final MovieService movieService;
     private final SingleLiveEvent<NetworkState> networkState;
@@ -41,7 +41,7 @@ public class MovieDetailViewModel extends AndroidViewModel {
     private Call<ResponseVideo> callVideos;
     private Call<ResponseReview> callReviews;
 
-    public MovieDetailViewModel(@NonNull Application application) {
+    MovieDetailViewModel(@NonNull Application application) {
         super(application);
         movieService = MovieAPI.getMovieService();
         networkState = new SingleLiveEvent<>();
