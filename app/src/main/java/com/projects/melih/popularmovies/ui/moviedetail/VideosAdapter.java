@@ -63,7 +63,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
         private final TextView tvType;
         private final TextView tvTitle;
 
-        VideoViewHolder(View itemView, Context context, ItemClickListener<Video> itemClickListener) {
+        VideoViewHolder(@NonNull View itemView, @NonNull Context context, @NonNull ItemClickListener<Video> itemClickListener) {
             super(itemView);
             this.context = context;
             this.itemClickListener = itemClickListener;
