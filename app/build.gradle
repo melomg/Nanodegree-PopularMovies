@@ -84,6 +84,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:${glide}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glide}"
 
+    // Components
+    implementation 'com.ms-square:expandableTextView:0.1.4'
+
     // Utils
     implementation 'com.jakewharton.timber:timber:4.6.0'
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"

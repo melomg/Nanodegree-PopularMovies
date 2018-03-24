@@ -1,6 +1,7 @@
 package com.projects.melih.popularmovies.network;
 
 import com.projects.melih.popularmovies.network.responses.ResponseMovie;
+import com.projects.melih.popularmovies.network.responses.ResponseReview;
 import com.projects.melih.popularmovies.network.responses.ResponseVideo;
 
 import retrofit2.Call;
@@ -21,4 +22,7 @@ public interface MovieService {
 
     @GET("movie/{id}/videos")
     Call<ResponseVideo> getMovieVideos(@Path("id") long id);
+
+    @GET("movie/{id}/reviews")
+    Call<ResponseReview> getMovieReviews(@Path("id") long id, @Query("page") int page);
 }

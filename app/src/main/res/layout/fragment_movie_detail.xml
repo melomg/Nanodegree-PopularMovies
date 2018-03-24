@@ -71,8 +71,7 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/normal_size">
+                android:layout_height="wrap_content">
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/basic"
@@ -140,9 +139,10 @@
                     android:id="@+id/videos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/gray_light"
                     android:elevation="6dp"
+                    android:background="@color/white"
                     android:layout_marginTop="@dimen/normal_size"
+                    android:paddingBottom="@dimen/min_size"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/basic"
                     tools:visibility="visible">
@@ -162,6 +162,49 @@
                         android:clipToPadding="false"
                         android:scrollbars="horizontal"
                         app:layout_constraintTop_toBottomOf="@+id/label_videos"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="6dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/normal_size"
+                    android:paddingBottom="@dimen/normal_size"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/videos"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/label_reviews"
+                        style="@style/Text.Label"
+                        android:layout_marginStart="@dimen/x_large_size"
+                        android:text="@string/label_reviews"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <Button
+                        android:id="@+id/reviews_see_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"
+                        android:clickable="true"
+                        android:backgroundTint="@color/colorAccent"
+                        android:text="@string/see_more"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:focusable="true"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/label_reviews"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/label_reviews"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/min_size"
+                        android:clipToPadding="false"
+                        android:scrollbars="vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/label_reviews"/>
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>

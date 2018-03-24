@@ -12,4 +12,8 @@
     <string name="label_vote_average">Vote Average:</string>
     <string name="label_overview">Overview:</string>
     <string name="label_videos">Videos:</string>
+    <string name="label_reviews">Reviews:</string>
+    <string name="see_more">See More</string>
+    <string name="review_author"><b>%1$s: \n</b> %2$s</string>
+    <string name="reviews">Reviews</string>
 </resources>
