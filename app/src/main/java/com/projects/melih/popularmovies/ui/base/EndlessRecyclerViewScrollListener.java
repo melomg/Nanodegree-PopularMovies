@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movielist;
+package com.projects.melih.popularmovies.ui.base;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

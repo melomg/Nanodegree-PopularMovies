@@ -14,6 +14,7 @@ import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.components.GridAutoFitLayoutManager;
 import com.projects.melih.popularmovies.databinding.FragmentMovieListBinding;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
+import com.projects.melih.popularmovies.ui.base.EndlessRecyclerViewScrollListener;
 import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
 
 /**
