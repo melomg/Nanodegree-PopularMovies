@@ -18,16 +18,20 @@ import com.bumptech.glide.request.RequestOptions;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.common.IntentUtils;
+import com.projects.melih.popularmovies.common.StringUtils;
 import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.databinding.FragmentMovieDetailBinding;
 import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.model.Review;
+import com.projects.melih.popularmovies.model.Video;
 import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.ui.base.BaseActivity;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
 import com.projects.melih.popularmovies.ui.reviews.ReviewsFragment;
 
 import java.util.List;
+
+import static com.projects.melih.popularmovies.common.IntentUtils.YOUTUBE_WATCH_LINK;
 
 /**
  * Created by Melih Gültekin on 21.02.2018
@@ -38,6 +42,9 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
     private static final int TRIMMED_REVIEWS_COUNT = 3;
     private FragmentMovieDetailBinding binding;
     private MovieDetailViewModel model;
+    private Movie movie;
+    @Nullable
+    private Video firstVideo;
     private VideosAdapter videosAdapter;
     private ShortReviewsAdapter reviewsAdapter;
 
@@ -56,7 +63,14 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         model = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
 
         model.getVideosLiveData().observe(this, videos -> {
-            binding.videos.setVisibility((CollectionUtils.isNotEmpty(videos)) ? View.VISIBLE : View.GONE);
+            if (CollectionUtils.isNotEmpty(videos)) {
+                if (firstVideo == null) {
+                    firstVideo = videos.get(0);
+                }
+                binding.videos.setVisibility(View.VISIBLE);
+            } else {
+                binding.videos.setVisibility(View.GONE);
+            }
             videosAdapter.setVideos(videos);
         });
         model.getReviewsLiveData().observe(this, reviews -> {
@@ -88,7 +102,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
 
         final Bundle arguments = getArguments();
         if (arguments != null) {
-            Movie movie = arguments.getParcelable(ARGUMENT_MOVIE);
+            movie = arguments.getParcelable(ARGUMENT_MOVIE);
             if (movie != null) {
                 model.setMovieId(movie.getId());
                 binding.collapsingToolbar.setTitle(movie.getTitle());
@@ -132,6 +146,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
 
         binding.toolbarMenu.setOnClickListener(this);
         binding.reviewsSeeMore.setOnClickListener(this);
+        binding.share.setOnClickListener(this);
     }
 
     @Override
@@ -143,6 +158,10 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                 break;
             case R.id.reviews_see_more:
                 navigationListener.addFragment(ReviewsFragment.newInstance(model.getMovieId()), BaseActivity.BOTTOM_TO_TOP);
+                break;
+            case R.id.share:
+                String videoUrl = (firstVideo == null) ? "" : YOUTUBE_WATCH_LINK + firstVideo.getKey();
+                IntentUtils.share(context, StringUtils.getAppendedText(movie.getTitle(), movie.getReleaseDate(), videoUrl), context.getString(R.string.share));
                 break;
         }
     }
