@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 
 public class IntentUtils {
     private IntentUtils() {
-
+        //no-op
     }
 
     @SuppressWarnings("WeakerAccess")

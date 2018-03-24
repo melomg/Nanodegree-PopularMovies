@@ -10,4 +10,6 @@ public interface NavigationListener {
     void onBackPressed();
 
     void addFragment(@NonNull BaseFragment newFragment);
+
+    void addFragment(@NonNull BaseFragment newFragment, @BaseActivity.SlideAnimType int animType);
 }

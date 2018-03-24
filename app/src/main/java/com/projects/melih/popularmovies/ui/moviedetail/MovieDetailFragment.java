@@ -21,8 +21,13 @@ import com.projects.melih.popularmovies.common.IntentUtils;
 import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.databinding.FragmentMovieDetailBinding;
 import com.projects.melih.popularmovies.model.Movie;
+import com.projects.melih.popularmovies.model.Review;
 import com.projects.melih.popularmovies.network.NetworkState;
+import com.projects.melih.popularmovies.ui.base.BaseActivity;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
+import com.projects.melih.popularmovies.ui.reviews.ReviewsFragment;
+
+import java.util.List;
 
 /**
  * Created by Melih Gültekin on 21.02.2018
@@ -30,9 +35,11 @@ import com.projects.melih.popularmovies.ui.base.BaseFragment;
 
 public class MovieDetailFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
+    private static final int TRIMMED_REVIEWS_COUNT = 3;
     private FragmentMovieDetailBinding binding;
     private MovieDetailViewModel model;
-    private VideosAdapter adapter;
+    private VideosAdapter videosAdapter;
+    private ShortReviewsAdapter reviewsAdapter;
 
     public static MovieDetailFragment newInstance(@NonNull Movie movie) {
         Bundle arguments = new Bundle();
@@ -50,7 +57,20 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
 
         model.getVideosLiveData().observe(this, videos -> {
             binding.videos.setVisibility((CollectionUtils.isNotEmpty(videos)) ? View.VISIBLE : View.GONE);
-            adapter.setVideos(videos);
+            videosAdapter.setVideos(videos);
+        });
+        model.getReviewsLiveData().observe(this, reviews -> {
+            if (CollectionUtils.isNotEmpty(reviews)) {
+                binding.reviews.setVisibility(View.VISIBLE);
+                if (reviews.size() > TRIMMED_REVIEWS_COUNT) {
+                    List<Review> trimmedReviews = reviews.subList(0, 3);
+                    reviewsAdapter.setReviews(trimmedReviews);
+                } else {
+                    reviewsAdapter.setReviews(reviews);
+                }
+            } else {
+                binding.reviews.setVisibility(View.GONE);
+            }
         });
         model.getNetworkStateLiveData().observe(this, networkState -> {
             if (networkState == NetworkState.NO_NETWORK) {
@@ -92,24 +112,39 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
             }
         }
 
-        adapter = new VideosAdapter(context, video -> {
+        videosAdapter = new VideosAdapter(context, video -> {
             if (!IntentUtils.openYoutube(context, video.getKey())) {
                 showToast(R.string.unknown_error);
             }
         });
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerViewVideos.setLayoutManager(layoutManager);
         binding.recyclerViewVideos.addItemDecoration(new GridSpacingItemDecoration(Utils.dpToPx(context, 6)));
         binding.recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerViewVideos.setAdapter(adapter);
+        binding.recyclerViewVideos.setAdapter(videosAdapter);
+
+        reviewsAdapter = new ShortReviewsAdapter(context, review -> {
+            //TODO open review.getUrl() link
+        });
+        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        binding.recyclerViewReviews.setLayoutManager(layoutManager);
+        binding.recyclerViewReviews.setAdapter(reviewsAdapter);
 
         binding.toolbarMenu.setOnClickListener(this);
+        binding.reviewsSeeMore.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        navigationListener.onBackPressed();
+        //TODO
+        switch (v.getId()) {
+            case R.id.toolbarMenu:
+                navigationListener.onBackPressed();
+                break;
+            case R.id.reviews_see_more:
+                navigationListener.addFragment(ReviewsFragment.newInstance(model.getMovieId()), BaseActivity.BOTTOM_TO_TOP);
+                break;
+        }
     }
 
     private static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

@@ -14,6 +14,7 @@ import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.components.GridAutoFitLayoutManager;
 import com.projects.melih.popularmovies.databinding.FragmentMovieListBinding;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
+import com.projects.melih.popularmovies.ui.base.EndlessRecyclerViewScrollListener;
 import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
 
 /**
@@ -21,8 +22,11 @@ import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
  */
 
 abstract class BaseMovieListFragment extends BaseFragment {
+    @SuppressWarnings("WeakerAccess")
     protected FragmentMovieListBinding binding;
+    @SuppressWarnings("WeakerAccess")
     protected MovieListAdapter adapter;
+    @SuppressWarnings("WeakerAccess")
     protected EndlessRecyclerViewScrollListener scrollListener;
 
     protected abstract void onLoadMore();
@@ -59,6 +63,7 @@ abstract class BaseMovieListFragment extends BaseFragment {
         binding.recyclerView.removeOnScrollListener(scrollListener);
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected void onRefreshListener() {
         adapter.submitMovies(null);
         scrollListener.resetState();

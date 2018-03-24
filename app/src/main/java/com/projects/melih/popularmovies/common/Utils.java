@@ -33,6 +33,7 @@ public class Utils {
         return BuildConfig.API_BASE_IMAGE_URL + "w780/" + path;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isNetworkConnected(@NonNull Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return (connectivityManager != null) && (connectivityManager.getActiveNetworkInfo() != null);

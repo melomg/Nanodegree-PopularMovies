@@ -11,6 +11,7 @@ import timber.log.Timber;
  * Created by Melih Gültekin on 17.02.2018
  */
 
+@SuppressWarnings("WeakerAccess")
 public class PopularMoviesApplication extends Application {
 
     @Override

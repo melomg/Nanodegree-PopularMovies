@@ -6,7 +6,7 @@ package com.projects.melih.popularmovies.common;
 
 public class Constants {
     private Constants() {
-        // no-op
+        //no-op
     }
 
     public static final String UNKNOWN_ERROR = "Unknown error";
