@@ -32,32 +32,41 @@
                     android:id="@+id/backdrop"
                     layout="@layout/layout_backdrop"/>
 
+                <RelativeLayout
+                    android:id="@+id/favorite_area"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_gravity="end"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin">
+
+                    <CheckBox
+                        android:id="@+id/favorite_check"
+                        android:layout_centerInParent="true"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:clickable="true"
+                        android:button="@null"
+                        android:stateListAnimator="@animator/scale"
+                        android:checked="false"
+                        android:background="@drawable/ic_favorite"
+                        android:focusable="true"
+                        app:layout_collapseMode="pin"/>
+                </RelativeLayout>
+
                 <android.support.v7.widget.Toolbar
                     android:id="@id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:layout_marginEnd="64dp"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/toolbarMenu"
-                            style="@style/Toolbar.Action"
-                            android:layout_alignParentStart="true"
-                            android:contentDescription="@null"
-                            app:srcCompat="@drawable/ic_back"/>
-
-                        <ImageButton
-                            android:id="@+id/favorite"
-                            style="@style/Toolbar.Action"
-                            android:layout_alignParentEnd="true"
-                            android:contentDescription="@null"
-                            app:srcCompat="@drawable/ic_favorite_off"/>
-                    </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/toolbarMenu"
+                        style="@style/Toolbar.Action"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_back"/>
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>

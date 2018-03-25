@@ -44,6 +44,9 @@ public class HomeFragment extends BaseFragment {
                     case BottomNavigationPagerAdapter.BY_TOP_RATED:
                         selectedItemId = R.id.action_sort_highest_rated;
                         break;
+                    case BottomNavigationPagerAdapter.BY_FAVORITED:
+                        selectedItemId = R.id.action_sort_favorited;
+                        break;
                     case BottomNavigationPagerAdapter.BY_POPULAR:
                     default:
                         selectedItemId = R.id.action_sort_most_popular;
@@ -63,6 +66,9 @@ public class HomeFragment extends BaseFragment {
             switch (item.getItemId()) {
                 case R.id.action_sort_highest_rated:
                     viewPagerCurrentItem = BottomNavigationPagerAdapter.BY_TOP_RATED;
+                    break;
+                case R.id.action_sort_favorited:
+                    viewPagerCurrentItem = BottomNavigationPagerAdapter.BY_FAVORITED;
                     break;
                 case R.id.action_sort_most_popular:
                 default:

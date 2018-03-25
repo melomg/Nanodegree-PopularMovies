@@ -6,6 +6,7 @@
     <!-- Bottom Sheet -->
     <string name="action_sort_most_popular">Most Popular</string>
     <string name="action_sort_highest_rated">Highest Rated</string>
+    <string name="action_sort_favorited">Favorites</string>
 
     <!-- Movie Detail-->
     <string name="label_release_date">Release Date:</string>

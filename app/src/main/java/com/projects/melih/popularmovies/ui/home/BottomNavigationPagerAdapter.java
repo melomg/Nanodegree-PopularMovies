@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.projects.melih.popularmovies.ui.movielist.FavoriteMoviesFragment;
 import com.projects.melih.popularmovies.ui.movielist.PopularMoviesFragment;
 import com.projects.melih.popularmovies.ui.movielist.TopRatedMoviesFragment;
 
@@ -14,7 +15,8 @@ import com.projects.melih.popularmovies.ui.movielist.TopRatedMoviesFragment;
 class BottomNavigationPagerAdapter extends FragmentStatePagerAdapter {
     static final int BY_POPULAR = 0;
     static final int BY_TOP_RATED = 1;
-    private static final int TAB_COUNT = 2;
+    static final int BY_FAVORITED = 2;
+    private static final int TAB_COUNT = 3;
 
     BottomNavigationPagerAdapter(FragmentManager childFragmentManager) {
         super(childFragmentManager);
@@ -26,6 +28,9 @@ class BottomNavigationPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case BY_TOP_RATED:
                 fragment = TopRatedMoviesFragment.newInstance();
+                break;
+            case BY_FAVORITED:
+                fragment = FavoriteMoviesFragment.newInstance();
                 break;
             case BY_POPULAR:
             default:

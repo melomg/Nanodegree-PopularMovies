@@ -88,9 +88,9 @@ class MovieDetailViewModel extends AndroidViewModel {
                     if (response.isSuccessful()) {
                         final ResponseVideo body = response.body();
                         if (body != null) {
+                            success = true;
                             final List<Video> videos = body.getVideos();
                             if (CollectionUtils.isNotEmpty(videos)) {
-                                success = true;
                                 videoList.postValue(videos);
                             }
                         }
@@ -121,9 +121,9 @@ class MovieDetailViewModel extends AndroidViewModel {
                     if (response.isSuccessful()) {
                         final ResponseReview body = response.body();
                         if (body != null) {
+                            success = true;
                             final ArrayList<Review> reviews = body.getReviews();
                             if (CollectionUtils.isNotEmpty(reviews)) {
-                                success = true;
                                 reviewList.postValue(reviews);
                             }
                         }

@@ -137,9 +137,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         binding.recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerViewVideos.setAdapter(videosAdapter);
 
-        reviewsAdapter = new ShortReviewsAdapter(context, review -> {
-            //TODO open review.getUrl() link
-        });
+        reviewsAdapter = new ShortReviewsAdapter(context);
         layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         binding.recyclerViewReviews.setLayoutManager(layoutManager);
         binding.recyclerViewReviews.setAdapter(reviewsAdapter);
@@ -147,6 +145,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         binding.toolbarMenu.setOnClickListener(this);
         binding.reviewsSeeMore.setOnClickListener(this);
         binding.share.setOnClickListener(this);
+        binding.favoriteArea.setOnClickListener(this);
     }
 
     @Override
@@ -161,7 +160,10 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                 break;
             case R.id.share:
                 String videoUrl = (firstVideo == null) ? "" : YOUTUBE_WATCH_LINK + firstVideo.getKey();
-                IntentUtils.share(context, StringUtils.getAppendedText(movie.getTitle(), movie.getReleaseDate(), videoUrl), context.getString(R.string.share));
+                IntentUtils.share(getActivity(), StringUtils.getAppendedText(movie.getTitle(), movie.getReleaseDate(), videoUrl), context.getString(R.string.share));
+                break;
+            case R.id.favorite_area:
+                binding.favoriteCheck.setChecked(!binding.favoriteCheck.isChecked());
                 break;
         }
     }
