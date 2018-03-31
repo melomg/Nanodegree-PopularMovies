@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movielist;
+package com.projects.melih.popularmovies.ui.movielist.popular;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
