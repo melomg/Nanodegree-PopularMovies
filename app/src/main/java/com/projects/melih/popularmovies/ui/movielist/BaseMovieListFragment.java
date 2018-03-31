@@ -25,9 +25,9 @@ import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
 public abstract class BaseMovieListFragment extends BaseFragment {
     protected FragmentMovieListBinding binding;
     protected MovieListAdapter adapter;
-    protected EndlessRecyclerViewScrollListener scrollListener;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
-    public abstract void onLoadMore();
+    protected abstract void onLoadMore();
 
     @CallSuper
     @Nullable

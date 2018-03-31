@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.projects.melih.popularmovies.R;
+import com.projects.melih.popularmovies.common.Utils;
 import com.projects.melih.popularmovies.databinding.ActivityReviewsBinding;
 import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.ui.base.BaseActivity;
@@ -89,6 +90,7 @@ public class ReviewsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        Utils.await(v);
         switch (v.getId()) {
             case R.id.toolbarMenu:
                 finish();

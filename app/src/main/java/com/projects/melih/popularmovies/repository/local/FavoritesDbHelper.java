@@ -4,15 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class FavoritesDbHelper extends SQLiteOpenHelper {
+class FavoritesDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favoritesDb.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TEXT_NOT_NULL = " TEXT NOT NULL";
     private static final String REAL_NOT_NULL = " REAL NOT NULL";
     private static final String COMMA_AND_SPACE = ", ";
 
-    // Constructor
-    public FavoritesDbHelper(Context context) {
+    FavoritesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

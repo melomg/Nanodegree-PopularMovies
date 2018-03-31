@@ -181,7 +181,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        //TODO
+        Utils.await(v);
         switch (v.getId()) {
             case R.id.toolbarMenu:
                 navigationListener.onBackPressed();

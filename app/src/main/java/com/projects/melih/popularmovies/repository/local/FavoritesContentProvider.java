@@ -17,7 +17,9 @@ import static com.projects.melih.popularmovies.repository.local.FavoritesContrac
 import static com.projects.melih.popularmovies.repository.local.FavoritesContract.FavoriteEntry.TABLE_NAME;
 
 public class FavoritesContentProvider extends ContentProvider {
+    @SuppressWarnings("WeakerAccess")
     public static final int FAVORITES = 100;
+    @SuppressWarnings("WeakerAccess")
     public static final int FAVORITE_WITH_ID = 101;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
 
@@ -69,18 +71,6 @@ public class FavoritesContentProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         return null;
-        /*
-            @Nullable
-            @Override
-            public String getType(@NonNull Uri uri) {
-                final int match = URI_MATCHER.match(uri);
-                switch (match) {
-                    case FAVORITES:
-                        return
-                }
-                return null;
-            }
-        */
     }
 
     @Nullable

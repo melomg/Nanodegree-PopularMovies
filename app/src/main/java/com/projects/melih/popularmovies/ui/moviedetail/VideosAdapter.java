@@ -90,7 +90,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
                 tvType.setText(video.getType());
                 tvTitle.setText(video.getName());
 
-                itemView.setOnClickListener(v -> itemClickListener.onItemClick(video));
+                itemView.setOnClickListener(v -> {
+                    Utils.await(v);
+                    itemClickListener.onItemClick(video);
+                });
             }
         }
     }

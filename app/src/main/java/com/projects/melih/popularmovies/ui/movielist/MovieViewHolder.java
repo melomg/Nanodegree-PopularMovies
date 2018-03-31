@@ -51,9 +51,15 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
             if (isFromFavorites) {
                 checkFavoriteArea.setChecked(true);
                 favoriteArea.setVisibility(View.VISIBLE);
-                favoriteArea.setOnClickListener(v -> movieItemListener.onFavoriteDelete(movie));
+                favoriteArea.setOnClickListener(v -> {
+                    Utils.await(v);
+                    movieItemListener.onFavoriteDelete(movie);
+                });
             }
-            itemView.setOnClickListener(v -> movieItemListener.onItemClick(movie));
+            itemView.setOnClickListener(v -> {
+                Utils.await(v);
+                movieItemListener.onItemClick(movie);
+            });
         }
     }
 }

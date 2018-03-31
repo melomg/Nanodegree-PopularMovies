@@ -28,6 +28,7 @@ public class NetworkState {
     private final int state;
     private final String errorMessage;
 
+    @SuppressWarnings("WeakerAccess")
     public NetworkState(@State int state) {
         this(state, null);
     }

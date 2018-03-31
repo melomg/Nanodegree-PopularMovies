@@ -99,6 +99,7 @@ class MovieDetailViewModel extends AndroidViewModel {
 
     void setShouldFetchLocalMovie(boolean shouldFetchLocal) {
         if (shouldFetchLocal) {
+            //noinspection ConstantConditions
             shouldFetchLocalLiveData.setValue(shouldFetchLocal);
         }
     }

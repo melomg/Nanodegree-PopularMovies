@@ -1,11 +1,11 @@
 package com.projects.melih.popularmovies.repository.local;
 
-import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class FavoritesContract {
     public static final String CONTENT_AUTHORITY = "com.projects.melih.popularmovies";
+    @SuppressWarnings("WeakerAccess")
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_FAVORITES = "favorites";
 
@@ -28,10 +28,6 @@ public class FavoritesContract {
 
         private FavoriteEntry() {
             //no-op
-        }
-
-        public static Uri buildFavoritesUriWithId(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
 }
