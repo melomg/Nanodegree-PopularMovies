@@ -1,15 +1,22 @@
 package com.projects.melih.popularmovies.ui.moviedetail;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.projects.melih.popularmovies.common.CollectionUtils;
 import com.projects.melih.popularmovies.common.SingleLiveEvent;
 import com.projects.melih.popularmovies.common.Utils;
+import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.model.Review;
 import com.projects.melih.popularmovies.model.Video;
 import com.projects.melih.popularmovies.network.MovieAPI;
@@ -17,6 +24,7 @@ import com.projects.melih.popularmovies.network.MovieService;
 import com.projects.melih.popularmovies.network.NetworkState;
 import com.projects.melih.popularmovies.network.responses.ResponseReview;
 import com.projects.melih.popularmovies.network.responses.ResponseVideo;
+import com.projects.melih.popularmovies.repository.local.FavoritesContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +44,20 @@ class MovieDetailViewModel extends AndroidViewModel {
     private final MovieService movieService;
     private final SingleLiveEvent<NetworkState> networkState;
     private final MutableLiveData<Long> movieId;
+    private final MutableLiveData<Boolean> shouldFetchLocalLiveData;
     private MediatorLiveData<List<Video>> videoList;
     private MediatorLiveData<ArrayList<Review>> reviewList;
+    private MediatorLiveData<Movie> localMovie;
     private Call<ResponseVideo> callVideos;
     private Call<ResponseReview> callReviews;
+    private AsyncTask<Void, Integer, Movie> localMovieTask;
 
     MovieDetailViewModel(@NonNull Application application) {
         super(application);
         movieService = MovieAPI.getMovieService();
         networkState = new SingleLiveEvent<>();
         movieId = new MutableLiveData<>();
+        shouldFetchLocalLiveData = new MutableLiveData<>();
     }
 
     LiveData<NetworkState> getNetworkStateLiveData() {
@@ -74,6 +86,32 @@ class MovieDetailViewModel extends AndroidViewModel {
             });
         }
         return reviewList;
+    }
+
+    void setMovieId(long movieId) {
+        this.movieId.setValue(movieId);
+    }
+
+    long getMovieId() {
+        final Long value = movieId.getValue();
+        return (value == null) ? 0 : value;
+    }
+
+    void setShouldFetchLocalMovie(boolean shouldFetchLocal) {
+        if (shouldFetchLocal) {
+            shouldFetchLocalLiveData.setValue(shouldFetchLocal);
+        }
+    }
+
+    LiveData<Movie> getLocalMovie() {
+        if (localMovie == null) {
+            localMovie = new MediatorLiveData<>();
+            localMovie.addSource(shouldFetchLocalLiveData, aBoolean -> {
+                cancelTaskIfNotNull();
+                localMovieTask = new GetLocalMovieTask(getApplication().getApplicationContext(), getMovieId(), movie -> localMovie.setValue(movie)).execute();
+            });
+        }
+        return localMovie;
     }
 
     private void callVideos(long id) {
@@ -142,13 +180,10 @@ class MovieDetailViewModel extends AndroidViewModel {
         }
     }
 
-    void setMovieId(long movieId) {
-        this.movieId.setValue(movieId);
-    }
-
-    long getMovieId() {
-        final Long value = movieId.getValue();
-        return (value == null) ? 0 : value;
+    private void cancelTaskIfNotNull() {
+        if (localMovieTask != null) {
+            localMovieTask.cancel(true);
+        }
     }
 
     @Override
@@ -160,5 +195,66 @@ class MovieDetailViewModel extends AndroidViewModel {
         if (callReviews != null) {
             callReviews.cancel();
         }
+        cancelTaskIfNotNull();
+    }
+
+    private static class GetLocalMovieTask extends AsyncTask<Void, Integer, Movie> {
+        @SuppressLint("StaticFieldLeak")
+        private final Context context;
+        private final GetLocalMovieTaskListener listener;
+        private final long movieId;
+
+        GetLocalMovieTask(@NonNull Context context, long movieId, @NonNull GetLocalMovieTaskListener listener) {
+            this.context = context;
+            this.movieId = movieId;
+            this.listener = listener;
+        }
+
+        protected Movie doInBackground(Void... params) {
+            if (isCancelled()) {
+                return null;
+            }
+            Uri uri = FavoritesContract.FavoriteEntry.CONTENT_URI.buildUpon().appendPath(Long.toString(movieId)).build();
+            Cursor cursor = context.getContentResolver().query(uri,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            Movie movie = null;
+            if ((cursor != null) && (cursor.getCount() != 0)) {
+                cursor.moveToFirst();
+                movie = getMovieFromCursor(cursor);
+            }
+            return movie;
+        }
+
+        protected void onPostExecute(Movie result) {
+            listener.onResult(result);
+        }
+
+        @NonNull
+        private Movie getMovieFromCursor(@NonNull Cursor cursor) {
+            int idIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID);
+            int titleIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_TITLE);
+            int synopsisIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_SYNOPSIS);
+            int releaseDateIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_RELEASE_DATE);
+            int averageRateIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_AVERAGE_RATE);
+            int posterPathIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_POSTER_PATH);
+            int backdropPathIndex = cursor.getColumnIndex(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_BACKDROP_PATH);
+            Movie movie = new Movie();
+            movie.setId(cursor.getLong(idIndex));
+            movie.setTitle(cursor.getString(titleIndex));
+            movie.setOverview(cursor.getString(synopsisIndex));
+            movie.setReleaseDate(cursor.getString(releaseDateIndex));
+            movie.setVoteAverage(cursor.getDouble(averageRateIndex));
+            movie.setPosterPath(cursor.getString(posterPathIndex));
+            movie.setBackdropPath(cursor.getString(backdropPathIndex));
+            return movie;
+        }
+    }
+
+    interface GetLocalMovieTaskListener {
+        void onResult(@Nullable Movie movie);
     }
 }
