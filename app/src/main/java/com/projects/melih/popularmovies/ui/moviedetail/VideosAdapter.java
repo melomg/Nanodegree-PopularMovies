@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.common.CollectionUtils;
@@ -76,6 +77,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
             if (video != null) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .dontAnimate()
                         .placeholder(R.drawable.ic_movie_placeholder_4_3)
                         .error(R.drawable.ic_movie_placeholder_4_3);
