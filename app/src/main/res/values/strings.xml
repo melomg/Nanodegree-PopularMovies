@@ -8,7 +8,7 @@
     <string name="action_sort_highest_rated">Highest Rated</string>
     <string name="action_sort_favorited">Favorites</string>
 
-    <!-- Movie Detail-->
+    <!-- Movie Detail -->
     <string name="label_release_date">Release Date:</string>
     <string name="label_vote_average">Vote Average:</string>
     <string name="label_overview">Overview:</string>
@@ -18,4 +18,7 @@
     <string name="review_author"><b>%1$s: \n</b> %2$s</string>
     <string name="reviews">Reviews</string>
     <string name="share">Share</string>
+
+    <!-- Favorite List -->
+    <string name="empty_favorite_list">You haven\'t add a favorite movie yet!</string>
 </resources>
