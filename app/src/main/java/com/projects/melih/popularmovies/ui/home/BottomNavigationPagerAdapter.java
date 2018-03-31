@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.projects.melih.popularmovies.ui.movielist.FavoriteMoviesFragment;
-import com.projects.melih.popularmovies.ui.movielist.PopularMoviesFragment;
-import com.projects.melih.popularmovies.ui.movielist.TopRatedMoviesFragment;
+import com.projects.melih.popularmovies.ui.movielist.favorite.FavoriteMoviesFragment;
+import com.projects.melih.popularmovies.ui.movielist.popular.PopularMoviesFragment;
+import com.projects.melih.popularmovies.ui.movielist.toprated.TopRatedMoviesFragment;
 
 /**
  * Created by Melih Gültekin on 1.03.2018
@@ -16,7 +16,7 @@ class BottomNavigationPagerAdapter extends FragmentStatePagerAdapter {
     static final int BY_POPULAR = 0;
     static final int BY_TOP_RATED = 1;
     static final int BY_FAVORITED = 2;
-    private static final int TAB_COUNT = 3;
+    static final int TAB_COUNT = 3;
 
     BottomNavigationPagerAdapter(FragmentManager childFragmentManager) {
         super(childFragmentManager);
