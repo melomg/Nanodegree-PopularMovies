@@ -27,10 +27,9 @@ import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.model.Review;
 import com.projects.melih.popularmovies.model.Video;
 import com.projects.melih.popularmovies.network.NetworkState;
-import com.projects.melih.popularmovies.ui.base.BaseActivity;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
 import com.projects.melih.popularmovies.ui.movielist.favorite.FavoriteMoviesViewModel;
-import com.projects.melih.popularmovies.ui.reviews.ReviewsFragment;
+import com.projects.melih.popularmovies.ui.reviews.ReviewsActivity;
 
 import java.util.List;
 
@@ -188,7 +187,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                 navigationListener.onBackPressed();
                 break;
             case R.id.reviews_see_more:
-                navigationListener.addFragment(ReviewsFragment.newInstance(model.getMovieId()), BaseActivity.BOTTOM_TO_TOP);
+                startActivity(ReviewsActivity.newIntent(context, model.getMovieId()));
                 break;
             case R.id.share:
                 String videoUrl = (firstVideo == null) ? "" : YOUTUBE_WATCH_LINK + firstVideo.getKey();

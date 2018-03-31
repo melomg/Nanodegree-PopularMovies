@@ -46,7 +46,6 @@ public class FavoriteMoviesFragment extends BaseFragment {
             }
         });
         model.getNetworkState().observe(this, networkState -> {
-            //TODO change network state as error state
             if (networkState == NetworkState.FAILED) {
                 showToast(R.string.unknown_error);
             } else if (networkState == NetworkState.EMPTY) {

@@ -3,12 +3,14 @@ package com.projects.melih.popularmovies.ui.base;
 import android.arch.lifecycle.Lifecycle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.transition.TransitionInflater;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.projects.melih.popularmovies.R;
 
@@ -65,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         break;
                     case NONE:
                     default:
-                        //no-po
+                        //no-op
                         break;
                 }
                 currentFragment.setExitTransition(exitTransitionSet);
@@ -82,6 +84,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         .commit();
             }
         }
+    }
+
+    protected void showToast(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Retention(RetentionPolicy.SOURCE)

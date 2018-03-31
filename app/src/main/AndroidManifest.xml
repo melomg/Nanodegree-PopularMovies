@@ -27,6 +27,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.reviews.ReviewsActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme"/>
+
         <provider
             android:name=".repository.local.FavoritesContentProvider"
             android:authorities="com.projects.melih.popularmovies"

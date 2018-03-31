@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.model.Review;
-import com.projects.melih.popularmovies.ui.base.ItemClickListener;
 
 import java.util.List;
 
@@ -20,18 +19,16 @@ class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolde
 
     private final AsyncListDiffer<Review> differ = new AsyncListDiffer<>(this, Review.DIFF_CALLBACK);
     private final Context context;
-    private final ItemClickListener<Review> itemClickListener;
 
-    ReviewsAdapter(@NonNull Context context, @NonNull ItemClickListener<Review> itemClickListener) {
+    ReviewsAdapter(@NonNull Context context) {
         this.context = context;
-        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new ReviewViewHolder(inflater.inflate(R.layout.item_movie_review, parent, false), context, itemClickListener);
+        return new ReviewViewHolder(inflater.inflate(R.layout.item_movie_review, parent, false), context);
     }
 
     @Override
@@ -50,20 +47,17 @@ class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolde
 
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
         private final Context context;
-        private final ItemClickListener<Review> itemClickListener;
         private final ExpandableTextView tvReview;
 
-        ReviewViewHolder(View itemView, Context context, ItemClickListener<Review> itemClickListener) {
+        ReviewViewHolder(View itemView, Context context) {
             super(itemView);
             this.context = context;
-            this.itemClickListener = itemClickListener;
             tvReview = itemView.findViewById(R.id.expand_text_view);
         }
 
         void bindTo(@Nullable final Review review) {
             if (review != null) {
                 tvReview.setText(context.getString(R.string.review_author, review.getAuthor(), review.getContent()));
-                itemView.setOnClickListener(v -> itemClickListener.onItemClick(review));
             }
         }
     }
