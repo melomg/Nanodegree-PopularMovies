@@ -27,7 +27,7 @@ import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
  * Created by Melih Gültekin on 1.03.2018
  */
 
-class TopRatedMoviesViewModel extends AndroidViewModel {
+public class TopRatedMoviesViewModel extends AndroidViewModel {
     private static final int FIRST_PAGE = 0;
     private final MovieService movieService;
     private final MutableLiveData<Integer> page;
