@@ -35,21 +35,25 @@
                 <RelativeLayout
                     android:id="@+id/favorite_area"
                     android:layout_width="?attr/actionBarSize"
-                    android:layout_gravity="end"
                     android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_collapseMode="pin">
 
                     <CheckBox
                         android:id="@+id/favorite_check"
                         android:layout_centerInParent="true"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:enabled="false"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:clickable="true"
                         android:button="@null"
                         android:stateListAnimator="@animator/scale"
                         android:checked="false"
                         android:background="@drawable/ic_favorite"
-                        android:focusable="true"
                         app:layout_collapseMode="pin"/>
                 </RelativeLayout>
 
@@ -202,9 +206,11 @@
                         android:text="@string/see_more"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:focusable="true"
+                        android:visibility="gone"
                         app:layout_constraintBaseline_toBaselineOf="@+id/label_reviews"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/label_reviews"/>
+                        app:layout_constraintTop_toTopOf="@+id/label_reviews"
+                        tools:visibility="visible"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_reviews"
