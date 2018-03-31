@@ -14,4 +14,10 @@
         android:icon="@drawable/ic_top_rated"
         android:orderInCategory="200"
         android:title="@string/action_sort_highest_rated"/>
+
+    <item
+        android:id="@+id/action_sort_favorited"
+        android:icon="@drawable/ic_favorite_off"
+        android:orderInCategory="300"
+        android:title="@string/action_sort_favorited"/>
 </menu>

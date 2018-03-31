@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movielist;
+package com.projects.melih.popularmovies.ui.movielist.popular;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -10,26 +10,27 @@ import android.view.ViewGroup;
 
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.network.NetworkState;
+import com.projects.melih.popularmovies.ui.movielist.BaseMovieListFragment;
 
 /**
  * Created by Melih Gültekin on 17.02.2018
  */
 
-public class TopRatedMoviesFragment extends BaseMovieListFragment {
+public class PopularMoviesFragment extends BaseMovieListFragment {
 
-    private TopRatedMoviesViewModel model;
+    private PopularMoviesViewModel model;
 
-    public static TopRatedMoviesFragment newInstance() {
-        return new TopRatedMoviesFragment();
+    public static PopularMoviesFragment newInstance() {
+        return new PopularMoviesFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        model = ViewModelProviders.of(this).get(TopRatedMoviesViewModel.class);
+        model = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
 
-        model.sortByTopRated(false);
+        model.sortByPopular(false);
         model.getPagedList().observe(this, allMovies -> {
             if (allMovies != null) {
                 adapter.submitMovies(allMovies);
@@ -45,13 +46,13 @@ public class TopRatedMoviesFragment extends BaseMovieListFragment {
         model.getRefreshState().observe(this, networkState -> binding.swipeRefresh.setRefreshing(networkState == NetworkState.LOADING));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             super.onRefreshListener();
-            model.sortByTopRated(true);
+            model.sortByPopular(true);
         });
         return view;
     }
 
     @Override
-    protected void onLoadMore() {
-       model.sortByTopRated(false);
+    public void onLoadMore() {
+        model.sortByPopular(false);
     }
 }

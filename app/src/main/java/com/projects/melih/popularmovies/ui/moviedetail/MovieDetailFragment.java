@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.common.CollectionUtils;
@@ -25,9 +27,9 @@ import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.model.Review;
 import com.projects.melih.popularmovies.model.Video;
 import com.projects.melih.popularmovies.network.NetworkState;
-import com.projects.melih.popularmovies.ui.base.BaseActivity;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
-import com.projects.melih.popularmovies.ui.reviews.ReviewsFragment;
+import com.projects.melih.popularmovies.ui.movielist.favorite.FavoriteMoviesViewModel;
+import com.projects.melih.popularmovies.ui.reviews.ReviewsActivity;
 
 import java.util.List;
 
@@ -39,18 +41,28 @@ import static com.projects.melih.popularmovies.common.IntentUtils.YOUTUBE_WATCH_
 
 public class MovieDetailFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
+    private static final String ARGUMENT_FETCH_LOCAL = "ARGUMENT_FETCH_LOCAL";
     private static final int TRIMMED_REVIEWS_COUNT = 3;
     private FragmentMovieDetailBinding binding;
     private MovieDetailViewModel model;
+    private FavoriteMoviesViewModel favoritesModel;
     private Movie movie;
     @Nullable
     private Video firstVideo;
     private VideosAdapter videosAdapter;
     private ShortReviewsAdapter reviewsAdapter;
+    private final AppBarLayout.OnOffsetChangedListener offsetChangedListener = (appBarLayout, verticalOffset) -> {
+        if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+            binding.favoriteArea.setVisibility(View.GONE);
+        } else if (verticalOffset <= 0) {
+            binding.favoriteArea.setVisibility(View.VISIBLE);
+        }
+    };
 
-    public static MovieDetailFragment newInstance(@NonNull Movie movie) {
+    public static MovieDetailFragment newInstance(@NonNull Movie movie, boolean shouldFetchLocal) {
         Bundle arguments = new Bundle();
         arguments.putParcelable(ARGUMENT_MOVIE, movie);
+        arguments.putBoolean(ARGUMENT_FETCH_LOCAL, shouldFetchLocal);
         MovieDetailFragment fragment = new MovieDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -61,6 +73,8 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_detail, container, false);
         model = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
+        //noinspection ConstantConditions
+        favoritesModel = ViewModelProviders.of(getActivity()).get(FavoriteMoviesViewModel.class);
 
         model.getVideosLiveData().observe(this, videos -> {
             if (CollectionUtils.isNotEmpty(videos)) {
@@ -79,8 +93,10 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                 if (reviews.size() > TRIMMED_REVIEWS_COUNT) {
                     List<Review> trimmedReviews = reviews.subList(0, 3);
                     reviewsAdapter.setReviews(trimmedReviews);
+                    binding.reviewsSeeMore.setVisibility(View.VISIBLE);
                 } else {
                     reviewsAdapter.setReviews(reviews);
+                    binding.reviewsSeeMore.setVisibility(View.GONE);
                 }
             } else {
                 binding.reviews.setVisibility(View.GONE);
@@ -93,6 +109,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                 showToast(networkState.getErrorMessage());
             }
         });
+        model.getLocalMovie().observe(this, localMovie -> binding.favoriteCheck.setChecked((localMovie != null)));
         return binding.getRoot();
     }
 
@@ -112,6 +129,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .dontAnimate()
                         .placeholder(R.drawable.ic_movie_placeholder_4_3)
                         .error(R.drawable.ic_movie_placeholder_4_3);
@@ -121,6 +139,12 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
                         .load(Utils.getImagePathWithBackdrop(movie.getBackdropPath()))
                         .thumbnail(0.1f)
                         .into(binding.backdrop.image);
+
+                boolean shouldFetchLocal = arguments.getBoolean(ARGUMENT_FETCH_LOCAL, true);
+                model.setShouldFetchLocalMovie(shouldFetchLocal);
+                if (!shouldFetchLocal) {
+                    binding.favoriteCheck.setChecked(true);
+                }
 
                 model.setMovieId(movie.getId());
             }
@@ -137,9 +161,7 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         binding.recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerViewVideos.setAdapter(videosAdapter);
 
-        reviewsAdapter = new ShortReviewsAdapter(context, review -> {
-            //TODO open review.getUrl() link
-        });
+        reviewsAdapter = new ShortReviewsAdapter(context);
         layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         binding.recyclerViewReviews.setLayoutManager(layoutManager);
         binding.recyclerViewReviews.setAdapter(reviewsAdapter);
@@ -147,21 +169,38 @@ public class MovieDetailFragment extends BaseFragment implements View.OnClickLis
         binding.toolbarMenu.setOnClickListener(this);
         binding.reviewsSeeMore.setOnClickListener(this);
         binding.share.setOnClickListener(this);
+        binding.favoriteArea.setOnClickListener(this);
+        binding.appBarLayout.addOnOffsetChangedListener(offsetChangedListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding.appBarLayout.removeOnOffsetChangedListener(offsetChangedListener);
     }
 
     @Override
     public void onClick(View v) {
-        //TODO
+        Utils.await(v);
         switch (v.getId()) {
             case R.id.toolbarMenu:
                 navigationListener.onBackPressed();
                 break;
             case R.id.reviews_see_more:
-                navigationListener.addFragment(ReviewsFragment.newInstance(model.getMovieId()), BaseActivity.BOTTOM_TO_TOP);
+                startActivity(ReviewsActivity.newIntent(context, model.getMovieId()));
                 break;
             case R.id.share:
                 String videoUrl = (firstVideo == null) ? "" : YOUTUBE_WATCH_LINK + firstVideo.getKey();
-                IntentUtils.share(context, StringUtils.getAppendedText(movie.getTitle(), movie.getReleaseDate(), videoUrl), context.getString(R.string.share));
+                IntentUtils.share(getActivity(), StringUtils.getAppendedText(movie.getTitle(), movie.getReleaseDate(), videoUrl), context.getString(R.string.share));
+                break;
+            case R.id.favorite_area:
+                if (binding.favoriteCheck.isChecked()) {
+                    binding.favoriteCheck.setChecked(false);
+                    favoritesModel.deleteFavorite(movie);
+                } else {
+                    binding.favoriteCheck.setChecked(true);
+                    favoritesModel.addFavorite(movie);
+                }
                 break;
         }
     }

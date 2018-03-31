@@ -17,4 +17,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <RelativeLayout
+        android:id="@+id/favorite_area"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <CheckBox
+            android:id="@+id/favorite_check"
+            android:layout_centerInParent="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:clickable="false"
+            android:enabled="false"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:button="@null"
+            android:stateListAnimator="@animator/scale"
+            android:checked="false"
+            android:background="@drawable/ic_favorite"
+            app:layout_collapseMode="pin"/>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

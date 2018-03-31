@@ -1,4 +1,4 @@
-package com.projects.melih.popularmovies.ui.movielist;
+package com.projects.melih.popularmovies.ui.movielist.toprated;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -27,19 +27,20 @@ import static com.projects.melih.popularmovies.common.Constants.UNKNOWN_ERROR;
  * Created by Melih Gültekin on 1.03.2018
  */
 
-class PopularMoviesViewModel extends AndroidViewModel {
-
+class TopRatedMoviesViewModel extends AndroidViewModel {
+    private static final int FIRST_PAGE = 0;
     private final MovieService movieService;
     private final MutableLiveData<Integer> page;
     private final MutableLiveData<NetworkState> networkState;
     private final MutableLiveData<NetworkState> refreshState;
+    private MutableLiveData<Integer> totalPage;
     private MutableLiveData<List<Movie>> list;
     private Call<ResponseMovie> call;
 
-    public PopularMoviesViewModel(@NonNull Application application) {
+    public TopRatedMoviesViewModel(@NonNull Application application) {
         super(application);
         page = new MutableLiveData<>();
-        page.setValue(0);
+        page.setValue(FIRST_PAGE);
         networkState = new MutableLiveData<>();
         refreshState = new MutableLiveData<>();
         movieService = MovieAPI.getMovieService();
@@ -49,7 +50,7 @@ class PopularMoviesViewModel extends AndroidViewModel {
         return list;
     }
 
-    LiveData<NetworkState> getNetworkState() {
+    MutableLiveData<NetworkState> getNetworkState() {
         return networkState;
     }
 
@@ -57,7 +58,7 @@ class PopularMoviesViewModel extends AndroidViewModel {
         return refreshState;
     }
 
-    synchronized void sortByPopular(boolean isFirstPage) {
+    synchronized void sortByTopRated(boolean isFirstPage) {
         if (list == null) {
             list = new MutableLiveData<>();
         }
@@ -68,19 +69,22 @@ class PopularMoviesViewModel extends AndroidViewModel {
         } else {
             if (isFirstPage) {
                 list.setValue(new ArrayList<>());
-                page.setValue(0);
+                page.setValue(FIRST_PAGE);
             }
-            final Integer currentPage = page.getValue();
-            if (currentPage != null) {
-                page.setValue(currentPage + 1);
+            //noinspection ConstantConditions
+            if ((totalPage == null) || (page.getValue() < totalPage.getValue())) {
+                final Integer currentPage = page.getValue();
+                if (currentPage != null) {
+                    page.setValue(currentPage + 1);
+                }
+                callTopRatedMovies(page.getValue());
             }
-            callPopularMovies(page.getValue());
         }
     }
 
-    private void callPopularMovies(final int page) {
+    private void callTopRatedMovies(final int page) {
         refreshState.postValue(NetworkState.LOADING);
-        call = movieService.getPopularMovies(page);
+        call = movieService.getTopRatedMovies(page);
         call.enqueue(new Callback<ResponseMovie>() {
             @Override
             public void onResponse(@NonNull Call<ResponseMovie> call, @NonNull Response<ResponseMovie> response) {
@@ -89,6 +93,10 @@ class PopularMoviesViewModel extends AndroidViewModel {
                     final ResponseMovie body = response.body();
                     if (body != null) {
                         final List<Movie> movies = body.getMovies();
+                        if (totalPage == null) {
+                            totalPage = new MutableLiveData<>();
+                        }
+                        totalPage.setValue(body.getTotalPages());
                         if (CollectionUtils.isNotEmpty(movies)) {
                             success = true;
                             List<Movie> allMovies = list.getValue();

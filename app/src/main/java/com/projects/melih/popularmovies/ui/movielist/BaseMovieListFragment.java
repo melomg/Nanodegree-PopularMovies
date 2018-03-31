@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.components.GridAutoFitLayoutManager;
 import com.projects.melih.popularmovies.databinding.FragmentMovieListBinding;
+import com.projects.melih.popularmovies.model.Movie;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
 import com.projects.melih.popularmovies.ui.base.EndlessRecyclerViewScrollListener;
 import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
@@ -21,13 +22,10 @@ import com.projects.melih.popularmovies.ui.moviedetail.MovieDetailFragment;
  * Created by Melih Gültekin on 1.03.2018
  */
 
-abstract class BaseMovieListFragment extends BaseFragment {
-    @SuppressWarnings("WeakerAccess")
+public abstract class BaseMovieListFragment extends BaseFragment {
     protected FragmentMovieListBinding binding;
-    @SuppressWarnings("WeakerAccess")
     protected MovieListAdapter adapter;
-    @SuppressWarnings("WeakerAccess")
-    protected EndlessRecyclerViewScrollListener scrollListener;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     protected abstract void onLoadMore();
 
@@ -39,7 +37,17 @@ abstract class BaseMovieListFragment extends BaseFragment {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
-        adapter = new MovieListAdapter(context, movie -> navigationListener.addFragment(MovieDetailFragment.newInstance(movie)));
+        adapter = new MovieListAdapter(context, new MovieListener() {
+            @Override
+            public void onFavoriteDelete(Movie movie) {
+                //no-op
+            }
+
+            @Override
+            public void onItemClick(Movie movie) {
+                navigationListener.addFragment(MovieDetailFragment.newInstance(movie, true));
+            }
+        });
 
         GridAutoFitLayoutManager layoutManager = new GridAutoFitLayoutManager(context, R.dimen.list_item_width);
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -63,8 +71,8 @@ abstract class BaseMovieListFragment extends BaseFragment {
         binding.recyclerView.removeOnScrollListener(scrollListener);
     }
 
-    @SuppressWarnings("WeakerAccess")
-    protected void onRefreshListener() {
+    @CallSuper
+    public void onRefreshListener() {
         adapter.submitMovies(null);
         scrollListener.resetState();
     }

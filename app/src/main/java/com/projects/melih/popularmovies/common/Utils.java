@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
+import android.view.View;
 
 import com.projects.melih.popularmovies.BuildConfig;
 
@@ -48,5 +49,10 @@ public class Utils {
 
     public static int dpToPx(@NonNull Context context, int dp) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
+    }
+
+    public static void await(@NonNull final View view) {
+        view.setEnabled(false);
+        view.postDelayed(() -> view.setEnabled(true), view.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
 }

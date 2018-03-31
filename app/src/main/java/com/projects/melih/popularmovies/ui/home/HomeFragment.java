@@ -13,6 +13,8 @@ import com.projects.melih.popularmovies.R;
 import com.projects.melih.popularmovies.databinding.FragmentHomeBinding;
 import com.projects.melih.popularmovies.ui.base.BaseFragment;
 
+import static com.projects.melih.popularmovies.ui.home.BottomNavigationPagerAdapter.TAB_COUNT;
+
 /**
  * Created by Melih Gültekin on 1.03.2018
  */
@@ -31,6 +33,7 @@ public class HomeFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         binding.viewPager.setAdapter(new BottomNavigationPagerAdapter(getChildFragmentManager()));
+        binding.viewPager.setOffscreenPageLimit(TAB_COUNT - 1);
         ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -43,6 +46,9 @@ public class HomeFragment extends BaseFragment {
                 switch (position) {
                     case BottomNavigationPagerAdapter.BY_TOP_RATED:
                         selectedItemId = R.id.action_sort_highest_rated;
+                        break;
+                    case BottomNavigationPagerAdapter.BY_FAVORITED:
+                        selectedItemId = R.id.action_sort_favorited;
                         break;
                     case BottomNavigationPagerAdapter.BY_POPULAR:
                     default:
@@ -63,6 +69,9 @@ public class HomeFragment extends BaseFragment {
             switch (item.getItemId()) {
                 case R.id.action_sort_highest_rated:
                     viewPagerCurrentItem = BottomNavigationPagerAdapter.BY_TOP_RATED;
+                    break;
+                case R.id.action_sort_favorited:
+                    viewPagerCurrentItem = BottomNavigationPagerAdapter.BY_FAVORITED;
                     break;
                 case R.id.action_sort_most_popular:
                 default:
